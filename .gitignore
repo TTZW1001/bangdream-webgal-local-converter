@@ -10,7 +10,7 @@ release/
 *.spec
 desktop.ini
 *.tmp
-README.md
+项目概述.md
 SCENE_MAINTENANCE.md
 图标.ico
 图标.png
