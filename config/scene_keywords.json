@@ -1,0 +1,971 @@
+{
+  "version": 2,
+  "legacy_file": "scene_keywords_legacy.json",
+  "time_markers": {
+    "清晨": [
+      "清晨",
+      "黎明",
+      "天刚亮",
+      "一早"
+    ],
+    "黄昏": [
+      "放学后",
+      "隔天放学后",
+      "傍晚",
+      "黄昏",
+      "夕阳"
+    ],
+    "夜晚": [
+      "晚上",
+      "夜晚",
+      "深夜",
+      "夜里",
+      "入夜"
+    ],
+    "雨天": [
+      "雨天",
+      "下雨",
+      "雨幕"
+    ],
+    "雨夜": [
+      "雨夜"
+    ],
+    "雪天": [
+      "雪天",
+      "下雪"
+    ]
+  },
+  "scenes": {
+    "campus": {
+      "type": "school",
+      "variants": {
+        "羽丘": {
+          "default": "学校、工作/羽丘/羽丘校园（白天）.png",
+          "times": {
+            "黄昏": "学校、工作/羽丘/羽丘校园（黄昏）.png",
+            "夜晚": "学校、工作/羽丘/羽丘校园（晚上）.png",
+            "雨天": "学校、工作/羽丘/羽丘校园（雨天）.png",
+            "雪天": "学校、工作/羽丘/羽丘校园（雪天）.png"
+          }
+        },
+        "花咲川": {
+          "default": "学校、工作/花咲川/花咲川校园（白天）.png",
+          "times": {
+            "黄昏": "学校、工作/花咲川/花咲川校园（黄昏）.png"
+          }
+        },
+        "月之森": {
+          "default": "学校、工作/月之森/月之森花园（白天）.png",
+          "times": {
+            "黄昏": "学校、工作/月之森/月之森花园（黄昏）.png"
+          }
+        }
+      }
+    },
+    "school_gate": {
+      "type": "school",
+      "variants": {
+        "羽丘": {
+          "default": "学校、工作/羽丘/羽丘校门（白天1）.png",
+          "times": {
+            "黄昏": "学校、工作/羽丘/羽丘校门（黄昏）.png",
+            "夜晚": "学校、工作/羽丘/羽丘校门（晚上）.png"
+          }
+        },
+        "花咲川": {
+          "default": "学校、工作/花咲川/花咲川校门（白天）.png",
+          "times": {
+            "黄昏": "学校、工作/花咲川/花咲川校门（黄昏）.png"
+          }
+        },
+        "月之森": {
+          "default": "学校、工作/月之森/月之森校门（白天）.png"
+        }
+      }
+    },
+    "classroom": {
+      "type": "school",
+      "variants": {
+        "羽丘": {
+          "default": "学校、工作/羽丘/羽丘教室（白天）.png",
+          "times": {
+            "黄昏": "学校、工作/羽丘/羽丘教室（黄昏）.png",
+            "夜晚": "学校、工作/羽丘/羽丘教室（晚上）.png",
+            "雨天": "学校、工作/羽丘/羽丘教室（雨天）.png"
+          }
+        },
+        "花咲川": {
+          "default": "学校、工作/花咲川/花咲川教室（白天）.png",
+          "times": {
+            "黄昏": "学校、工作/花咲川/花咲川教室（黄昏）.png"
+          }
+        },
+        "月之森": {
+          "default": "学校、工作/月之森/月之森教室（白天）.png",
+          "times": {
+            "黄昏": "学校、工作/月之森/月之森教室（黄昏）.png"
+          }
+        }
+      }
+    },
+    "hallway": {
+      "type": "school",
+      "variants": {
+        "羽丘": {
+          "default": "学校、工作/羽丘/羽丘走廊（白天）.png",
+          "times": {
+            "黄昏": "学校、工作/羽丘/羽丘走廊（黄昏）.png",
+            "夜晚": "学校、工作/羽丘/羽丘走廊（晚上）.png"
+          }
+        },
+        "花咲川": {
+          "default": "学校、工作/花咲川/花咲川走廊（白天）.png",
+          "times": {
+            "黄昏": "学校、工作/花咲川/花咲川走廊（黄昏）.png",
+            "雨天": "学校、工作/花咲川/花咲川走廊（雨天）.png"
+          }
+        },
+        "月之森": {
+          "default": "学校、工作/月之森/月之森走廊（白天）.png",
+          "times": {
+            "黄昏": "学校、工作/月之森/月之森走廊（黄昏）.png"
+          }
+        }
+      }
+    },
+    "rooftop": {
+      "type": "school",
+      "variants": {
+        "羽丘": {
+          "default": "学校、工作/羽丘/羽丘天台（白天）.png",
+          "times": {
+            "黄昏": "学校、工作/羽丘/羽丘天台（黄昏）.png",
+            "夜晚": "学校、工作/羽丘/羽丘天台（晚上）.png"
+          }
+        },
+        "花咲川": {
+          "default": "学校、工作/花咲川/花咲川天台（白天）.png",
+          "times": {
+            "黄昏": "学校、工作/花咲川/花咲川天台（黄昏）.png",
+            "夜晚": "学校、工作/花咲川/花咲川天台（晚上）.png"
+          }
+        }
+      }
+    },
+    "music_room": {
+      "type": "school",
+      "variants": {
+        "羽丘": {
+          "default": "学校、工作/羽丘/羽丘音乐室（白天）.png",
+          "times": {
+            "黄昏": "学校、工作/羽丘/羽丘音乐室（黄昏）.png"
+          }
+        }
+      }
+    },
+    "student_council_room": {
+      "type": "school",
+      "variants": {
+        "羽丘": {
+          "default": "学校、工作/羽丘/学生会会议室（白天）.png",
+          "times": {
+            "黄昏": "学校、工作/羽丘/学生会会议室（黄昏）.png"
+          }
+        },
+        "花咲川": {
+          "default": "学校、工作/花咲川/花咲川学生会活动室（白天）.png",
+          "times": {
+            "黄昏": "学校、工作/花咲川/花咲川学生会活动室（黄昏）.png",
+            "雨天": "学校、工作/花咲川/花咲川学生会活动室（雨天）.png"
+          }
+        }
+      }
+    },
+    "gym": {
+      "type": "school",
+      "variants": {
+        "羽丘": {
+          "default": "学校、工作/羽丘/体育馆（白天）.png",
+          "times": {
+            "夜晚": "学校、工作/羽丘/体育馆（晚上）.png"
+          }
+        },
+        "花咲川": {
+          "default": "学校、工作/花咲川/体育馆（白天）.png",
+          "times": {
+            "夜晚": "学校、工作/花咲川/体育馆（晚上）.png"
+          }
+        },
+        "月之森": {
+          "default": "学校、工作/月之森/体育馆.png"
+        }
+      }
+    },
+    "entrance": {
+      "type": "school",
+      "variants": {
+        "羽丘": {
+          "default": "学校、工作/羽丘/羽丘玄关（白天）.png",
+          "times": {
+            "黄昏": "学校、工作/羽丘/羽丘玄关（黄昏）.jpg",
+            "夜晚": "学校、工作/羽丘/羽丘玄关（晚上）.png"
+          }
+        },
+        "花咲川": {
+          "default": "学校、工作/花咲川/花咲川玄关（白天）.png"
+        }
+      }
+    },
+    "auditorium": {
+      "type": "school",
+      "variants": {
+        "花咲川": {
+          "default": "学校、工作/花咲川/花咲川礼堂（通常）.png"
+        },
+        "月之森": {
+          "default": "学校、工作/月之森/月之森礼堂（音乐祭）.png"
+        }
+      }
+    },
+    "kokoro_meeting_room": {
+      "type": "fixed",
+      "default": "角色生活地点/hello happy world/弦卷心家会议室.png"
+    },
+    "rehearsal_room": {
+      "type": "fixed",
+      "default": "演出、排练/其他排练场地/排练室4.png"
+    },
+    "park": {
+      "type": "fixed",
+      "default": "公园/公园1（白天）.png",
+      "times": {
+        "黄昏": "公园/公园1（黄昏）.png",
+        "夜晚": "公园/公园1（晚上）.png",
+        "雨天": "公园/公园1（雨天）.png"
+      }
+    },
+    "garden": {
+      "type": "fixed",
+      "default": "公园/花园（白天）.png",
+      "times": {
+        "夜晚": "公园/花园（晚上）.png",
+        "雨天": "公园/花园（雨天）.png"
+      }
+    },
+    "grove": {
+      "type": "fixed",
+      "default": "公园/小树林（白天）.png",
+      "times": {
+        "黄昏": "公园/小树林（黄昏）.png",
+        "夜晚": "公园/小树林（夜晚）.jpg"
+      }
+    },
+    "station": {
+      "type": "fixed",
+      "default": "交通/车站1（白天）.png",
+      "times": {
+        "黄昏": "交通/车站1（黄昏）.png",
+        "夜晚": "交通/车站2（晚上）.png",
+        "雨天": "交通/车站2（雨天）.png"
+      }
+    },
+    "train": {
+      "type": "fixed",
+      "default": "交通/电车（白天）.png",
+      "times": {
+        "黄昏": "交通/电车（黄昏）.png",
+        "夜晚": "交通/电车（夜晚）.jpg"
+      }
+    },
+    "street": {
+      "type": "fixed",
+      "default": "路边/街道1（白天）.png",
+      "times": {
+        "黄昏": "路边/街道1（黄昏）.png",
+        "夜晚": "路边/街道1（晚上）.png",
+        "雨天": "路边/街道1（雨天白天）.png",
+        "雨夜": "路边/街道1（雨夜）.png"
+      }
+    },
+    "alley": {
+      "type": "fixed",
+      "default": "路边/小巷入口（白天）.png"
+    },
+    "chinatown": {
+      "type": "fixed",
+      "default": "路边/唐人街（白天）.png",
+      "times": {
+        "黄昏": "路边/唐人街（黄昏）.png"
+      }
+    },
+    "rail_track": {
+      "type": "fixed",
+      "default": "路边/铁轨清晨.png",
+      "times": {
+        "黄昏": "路边/铁轨黄昏.png",
+        "夜晚": "路边/铁轨夜晚.png",
+        "清晨": "路边/铁轨清晨.png"
+      }
+    },
+    "office": {
+      "type": "fixed",
+      "default": "学校、工作/工作场所/办公室1.png"
+    },
+    "agency_meeting_room": {
+      "type": "fixed",
+      "default": "学校、工作/工作场所/偶像事务所会议室.png"
+    },
+    "cafe": {
+      "type": "fixed",
+      "default": "商店/咖啡厅.png"
+    },
+    "family_restaurant": {
+      "type": "fixed",
+      "default": "商店/家庭餐厅（白天）.png"
+    },
+    "convenience_store": {
+      "type": "fixed",
+      "default": "商店/便利店内（白天）.png"
+    },
+    "hospital_front": {
+      "type": "fixed",
+      "default": "医院/医院前台.png"
+    },
+    "hospital_ward": {
+      "type": "fixed",
+      "default": "医院/疗养病房.png"
+    },
+    "circle_front": {
+      "type": "fixed",
+      "default": "演出、排练/CiRCLE/CiRCLE前台（白天）.png",
+      "times": {
+        "黄昏": "演出、排练/CiRCLE/CiRCLE前台（黄昏）.png",
+        "夜晚": "演出、排练/CiRCLE/CiRCLE前台（晚上）.png"
+      }
+    },
+    "circle_entrance": {
+      "type": "fixed",
+      "default": "演出、排练/CiRCLE/CiRCLE门口（白天）.png",
+      "times": {
+        "黄昏": "演出、排练/CiRCLE/CiRCLE门口（黄昏）.png",
+        "夜晚": "演出、排练/CiRCLE/CiRCLE门口（晚上）.png",
+        "雨天": "演出、排练/CiRCLE/CiRCLE门口（雨天）.png"
+      }
+    },
+    "circle_backstage": {
+      "type": "fixed",
+      "default": "演出、排练/CiRCLE/CiRCLE后台.png"
+    },
+    "circle_rehearsal": {
+      "type": "fixed",
+      "default": "演出、排练/CiRCLE/CiRCLE排练室（通常）.png"
+    },
+    "circle_stage": {
+      "type": "fixed",
+      "default": "演出、排练/CiRCLE/CiRCLE舞台（演出中1）.png"
+    },
+    "ring_front": {
+      "type": "fixed",
+      "default": "演出、排练/RiNG/RiNG前台.png"
+    },
+    "ring_entrance": {
+      "type": "fixed",
+      "default": "演出、排练/RiNG/RiNG门口（白天）.png"
+    },
+    "ring_backstage": {
+      "type": "fixed",
+      "default": "演出、排练/RiNG/RiNG后台.png"
+    },
+    "ring_rehearsal": {
+      "type": "fixed",
+      "default": "演出、排练/RiNG/RiNG排练室.png"
+    },
+    "ring_stage": {
+      "type": "fixed",
+      "default": "演出、排练/RiNG/RiNG舞台（演出）.png"
+    },
+    "space_stage": {
+      "type": "fixed",
+      "default": "演出、排练/SPACE/SPACE（白天）.jpeg"
+    },
+    "generic_stage": {
+      "type": "fixed",
+      "default": "演出、排练/其他演出场地/临时舞台（白天）.png"
+    },
+    "generic_backstage": {
+      "type": "fixed",
+      "default": "演出、排练/其他演出场地/后台1.png"
+    },
+    "misaki_room": {
+      "type": "fixed",
+      "default": "角色生活地点/hello happy world/美咲的房间.png"
+    },
+    "kokoro_bedroom": {
+      "type": "fixed",
+      "default": "角色生活地点/hello happy world/弦卷心卧室.png"
+    },
+    "kokoro_hallway": {
+      "type": "fixed",
+      "default": "角色生活地点/hello happy world/弦卷心家走廊（通常）.png"
+    },
+    "kanon_room": {
+      "type": "fixed",
+      "default": "角色生活地点/hello happy world/花音的房间（白天）.png",
+      "times": {
+        "夜晚": "角色生活地点/hello happy world/花音的房间（晚上）.png"
+      }
+    },
+    "kaoru_room": {
+      "type": "fixed",
+      "default": "角色生活地点/hello happy world/薰的房间（白天）.png",
+      "times": {
+        "夜晚": "角色生活地点/hello happy world/薰的房间（晚上）.png"
+      }
+    },
+    "anon_room": {
+      "type": "fixed",
+      "default": "角色生活地点/mygo/爱音的房间（黄昏）.png",
+      "times": {
+        "黄昏": "角色生活地点/mygo/爱音的房间（黄昏）.png",
+        "夜晚": "角色生活地点/mygo/爱音的房间（晚上）.png"
+      }
+    },
+    "tomori_room": {
+      "type": "fixed",
+      "default": "角色生活地点/mygo/灯的房间（白天）.png",
+      "times": {
+        "夜晚": "角色生活地点/mygo/灯的房间（夜晚）.png"
+      }
+    },
+    "taki_room": {
+      "type": "fixed",
+      "default": "角色生活地点/mygo/立希的房间（白天）.png",
+      "times": {
+        "夜晚": "角色生活地点/mygo/立希的房间（深夜）.png"
+      }
+    },
+    "soyo_room": {
+      "type": "fixed",
+      "default": "角色生活地点/mygo/素世的房间（白天）.jpg",
+      "times": {
+        "清晨": "角色生活地点/mygo/素世的房间（清晨）.png",
+        "夜晚": "角色生活地点/mygo/素世的房间（晚上）.jpg"
+      }
+    },
+    "anon_house_entrance": {
+      "type": "fixed",
+      "default": "角色生活地点/mygo/爱音家门口（白天有车）.jpg",
+      "times": {
+        "黄昏": "角色生活地点/mygo/爱音家门口（黄昏无车）.png"
+      }
+    },
+    "soyo_living_room": {
+      "type": "fixed",
+      "default": "角色生活地点/mygo/素世家客厅（白天）.png",
+      "times": {
+        "黄昏": "角色生活地点/mygo/素世家客厅（黄昏）.png",
+        "夜晚": "角色生活地点/mygo/素世家客厅（晚上）.png",
+        "雨天": "角色生活地点/mygo/素世家客厅（雨天）.png"
+      }
+    },
+    "arisa_storehouse": {
+      "type": "fixed",
+      "default": "角色生活地点/popipa/有咲的地下仓库（通常）.png"
+    },
+    "arisa_house_front": {
+      "type": "fixed",
+      "default": "角色生活地点/popipa/有咲家门口（白天）.png",
+      "times": {
+        "黄昏": "角色生活地点/popipa/有咲家门口（黄昏）.png",
+        "夜晚": "角色生活地点/popipa/有咲家门口（晚上）.png",
+        "雪天": "角色生活地点/popipa/有咲家门口（雪天）.png"
+      }
+    },
+    "misaki_grandma_living_room": {
+      "type": "fixed",
+      "default": "角色生活地点/hello happy world/美咲祖母家客厅（白天）.png",
+      "times": {
+        "夜晚": "角色生活地点/hello happy world/美咲祖母家客厅（夜晚）.png"
+      }
+    },
+    "mujica_rest_room": {
+      "type": "fixed",
+      "default": "演出、排练/Mujica相关/休息室.jpg"
+    },
+    "mujica_stage": {
+      "type": "fixed",
+      "default": "演出、排练/Mujica相关/mujica王座舞台.png"
+    },
+    "mujica_backstage": {
+      "type": "fixed",
+      "default": "演出、排练/Mujica相关/mujica后台.jpg"
+    },
+    "gwave_lobby": {
+      "type": "fixed",
+      "default": "演出、排练/Mujica相关/G：wave大厅.jpg"
+    },
+    "gwave_dressing_room": {
+      "type": "fixed",
+      "default": "演出、排练/Mujica相关/G：wave化妆间有吉他.png"
+    },
+    "agency_hall": {
+      "type": "fixed",
+      "default": "演出、排练/Mujica相关/经纪公司大厅.jpg"
+    },
+    "agency_meeting": {
+      "type": "fixed",
+      "default": "演出、排练/Mujica相关/经纪公司会议室.jpg"
+    },
+    "park_stage_large": {
+      "type": "fixed",
+      "default": "演出、排练/其他演出场地/公园舞台-大（白天）.png",
+      "times": {
+        "黄昏": "演出、排练/其他演出场地/公园舞台-大（黄昏）.png",
+        "夜晚": "演出、排练/其他演出场地/公园舞台-大（晚上）.png"
+      }
+    },
+    "event_hall": {
+      "type": "fixed",
+      "default": "演出、排练/其他演出场地/会场（活动1）.png"
+    },
+    "auditorium_stage": {
+      "type": "fixed",
+      "default": "演出、排练/其他演出场地/演出厅舞台（空）.png"
+    },
+    "auditorium_rest": {
+      "type": "fixed",
+      "default": "演出、排练/其他演出场地/演出厅休息室.png"
+    },
+    "festival_stage": {
+      "type": "fixed",
+      "default": "演出、排练/其他演出场地/音乐节舞台4（白天）.png",
+      "times": {
+        "夜晚": "演出、排练/其他演出场地/音乐节舞台4（晚上）.png"
+      }
+    },
+    "galaxy_stage": {
+      "type": "fixed",
+      "default": "演出、排练/其他live house/Galaxy舞台（通常）.png"
+    },
+    "galaxy_hallway": {
+      "type": "fixed",
+      "default": "演出、排练/其他live house/Galaxy走廊.png"
+    },
+    "galaxy_ramen": {
+      "type": "fixed",
+      "default": "演出、排练/其他live house/Galaxy拉面馆.png"
+    },
+    "idol_studio_hall": {
+      "type": "fixed",
+      "default": "演出、排练/其他live house/偶像工作室大厅.png"
+    },
+    "idol_agency_entrance": {
+      "type": "fixed",
+      "default": "演出、排练/其他live house/偶像事务所入口.png"
+    },
+    "anon_living_room": {
+      "type": "fixed",
+      "default": "角色生活地点/mygo/爱音家客厅.jpg"
+    },
+    "tomori_living_room": {
+      "type": "fixed",
+      "default": "角色生活地点/mygo/灯家客厅.jpg"
+    },
+    "tomori_skybridge": {
+      "type": "fixed",
+      "default": "角色生活地点/mygo/灯家楼下天桥（黄昏）.png",
+      "times": {
+        "黄昏": "角色生活地点/mygo/灯家楼下天桥（黄昏）.png",
+        "夜晚": "角色生活地点/mygo/灯家楼下天桥（夜晚）.png"
+      }
+    },
+    "tomori_balcony": {
+      "type": "fixed",
+      "default": "角色生活地点/mygo/灯家阳台.png"
+    },
+    "taki_living_room": {
+      "type": "fixed",
+      "default": "角色生活地点/mygo/立希家客厅.jpg"
+    },
+    "taki_house_exterior": {
+      "type": "fixed",
+      "default": "角色生活地点/mygo/立希家外部（白天）.jpg"
+    },
+    "shiifune_living_room": {
+      "type": "fixed",
+      "default": "角色生活地点/mygo/诗船家客厅.png"
+    },
+    "shiifune_practice_room": {
+      "type": "fixed",
+      "default": "角色生活地点/mygo/诗船家小练习室.png"
+    },
+    "shiifune_entrance": {
+      "type": "fixed",
+      "default": "角色生活地点/mygo/诗船家玄关.png"
+    },
+    "shiifune_courtyard": {
+      "type": "fixed",
+      "default": "角色生活地点/mygo/诗船家中庭.png"
+    },
+    "soyo_building_exterior": {
+      "type": "fixed",
+      "default": "角色生活地点/mygo/素世家大楼（黄昏）.png",
+      "times": {
+        "黄昏": "角色生活地点/mygo/素世家大楼（黄昏）.png",
+        "夜晚": "角色生活地点/mygo/素世家大楼（夜晚）.png"
+      }
+    },
+    "soyo_lobby": {
+      "type": "fixed",
+      "default": "角色生活地点/mygo/素世家一楼大堂（白天）.png",
+      "times": {
+        "雨天": "角色生活地点/mygo/素世家一楼大堂（雨天）.png"
+      }
+    },
+    "soyo_balcony": {
+      "type": "fixed",
+      "default": "角色生活地点/mygo/素世家阳台（晚上）.png"
+    },
+    "soyo_old_home": {
+      "type": "fixed",
+      "default": "角色生活地点/mygo/素世旧家.png"
+    },
+    "kaname_dining_room": {
+      "type": "fixed",
+      "default": "角色生活地点/mygo/要家餐厅.png"
+    },
+    "kaname_kitchen": {
+      "type": "fixed",
+      "default": "角色生活地点/mygo/要家厨房.png"
+    },
+    "kaname_living_room": {
+      "type": "fixed",
+      "default": "角色生活地点/mygo/要家客厅.jpg"
+    },
+    "kaname_entrance": {
+      "type": "fixed",
+      "default": "角色生活地点/mygo/要家玄关.png"
+    },
+    "kaname_gate": {
+      "type": "fixed",
+      "default": "角色生活地点/mygo/要家院门口.png"
+    },
+    "kaname_courtyard": {
+      "type": "fixed",
+      "default": "角色生活地点/mygo/要家中庭.png"
+    },
+    "happy_kingdom_castle": {
+      "type": "fixed",
+      "default": "角色生活地点/hello happy world/快乐国城堡内（白天）.png",
+      "times": {
+        "夜晚": "角色生活地点/hello happy world/快乐国城堡内（夜晚）.png"
+      }
+    },
+    "happy_kingdom_guest_room": {
+      "type": "fixed",
+      "default": "角色生活地点/hello happy world/快乐国城堡内客房.png"
+    },
+    "happy_kingdom_square": {
+      "type": "fixed",
+      "default": "角色生活地点/hello happy world/快乐国广场（白天）.png",
+      "times": {
+        "夜晚": "角色生活地点/hello happy world/快乐国广场（庆典夜晚）.png"
+      }
+    },
+    "misaki_grandma_exterior": {
+      "type": "fixed",
+      "default": "角色生活地点/hello happy world/美咲祖母房外景（白天）.png",
+      "times": {
+        "黄昏": "角色生活地点/hello happy world/美咲祖母房外景（黄昏）.png"
+      }
+    },
+    "kokoro_side_gate": {
+      "type": "fixed",
+      "default": "角色生活地点/hello happy world/弦卷心家侧门（白天）.png",
+      "times": {
+        "夜晚": "角色生活地点/hello happy world/弦卷心家侧门（晚上）.png"
+      }
+    },
+    "kokoro_front_gate": {
+      "type": "fixed",
+      "default": "角色生活地点/hello happy world/弦卷心家正门（白天）.png"
+    },
+    "hagumi_room": {
+      "type": "fixed",
+      "default": "角色生活地点/hello happy world/育美卧室.png"
+    },
+    "kasumi_living_room": {
+      "type": "fixed",
+      "default": "角色生活地点/popipa/香澄家客厅（白天）.png",
+      "times": {
+        "夜晚": "角色生活地点/popipa/香澄家客厅（晚上）.png"
+      }
+    },
+    "kasumi_room": {
+      "type": "fixed",
+      "default": "角色生活地点/popipa/香澄的房间（晚上）.png"
+    },
+    "tae_living_room": {
+      "type": "fixed",
+      "default": "角色生活地点/popipa/多惠家客厅（白天） .png",
+      "times": {
+        "夜晚": "角色生活地点/popipa/多惠家客厅（晚上）.png"
+      }
+    },
+    "tae_room": {
+      "type": "fixed",
+      "default": "角色生活地点/popipa/多惠卧室（白天）.png",
+      "times": {
+        "夜晚": "角色生活地点/popipa/多惠卧室（晚上）.png"
+      }
+    },
+    "rimi_room": {
+      "type": "fixed",
+      "default": "角色生活地点/popipa/里美的房间（白天）.png",
+      "times": {
+        "夜晚": "角色生活地点/popipa/里美的房间（晚上）.png"
+      }
+    },
+    "saaya_room": {
+      "type": "fixed",
+      "default": "角色生活地点/popipa/纱绫的房间（白天）.png",
+      "times": {
+        "黄昏": "角色生活地点/popipa/纱绫的房间（黄昏）.png",
+        "夜晚": "角色生活地点/popipa/纱绫的房间（晚上）.png"
+      }
+    },
+    "saaya_living_room": {
+      "type": "fixed",
+      "default": "角色生活地点/popipa/纱绫家客厅（白天）.png",
+      "times": {
+        "夜晚": "角色生活地点/popipa/纱绫家客厅（夜晚）.png"
+      }
+    },
+    "arisa_bedroom": {
+      "type": "fixed",
+      "default": "角色生活地点/popipa/有咲卧室（白天）.png",
+      "times": {
+        "夜晚": "角色生活地点/popipa/有咲卧室（夜晚）.png"
+      }
+    },
+    "ryuseido": {
+      "type": "fixed",
+      "default": "角色生活地点/popipa/有咲家的流星堂.png"
+    },
+    "outdoor_stage": {
+      "type": "fixed",
+      "default": "演出、排练/其他演出场地/室外舞台（白天）.png",
+      "times": {
+        "夜晚": "演出、排练/其他演出场地/室外舞台（晚上）.png"
+      }
+    },
+    "outdoor_backstage": {
+      "type": "fixed",
+      "default": "演出、排练/其他演出场地/室外演出后台.png"
+    },
+    "public_backstage_hallway": {
+      "type": "fixed",
+      "default": "演出、排练/其他演出场地/后台2.png"
+    },
+    "budokan_entrance": {
+      "type": "fixed",
+      "default": "演出、排练/其他演出场地/武道馆（门口）.png"
+    },
+    "auditorium_entrance": {
+      "type": "fixed",
+      "default": "演出、排练/其他演出场地/演出厅门口（白天）.png",
+      "times": {
+        "夜晚": "演出、排练/其他演出场地/演出厅门口（晚上）.png"
+      }
+    },
+    "idol_stage": {
+      "type": "fixed",
+      "default": "演出、排练/其他演出场地/偶像舞台（全景）.png"
+    },
+    "ring_rooftop": {
+      "type": "fixed",
+      "default": "演出、排练/RiNG/RiNG天台（晚上）.png"
+    },
+    "dub_lobby": {
+      "type": "fixed",
+      "default": "演出、排练/其他live house/dub大厅.png"
+    },
+    "interview_room": {
+      "type": "fixed",
+      "default": "演出、排练/Mujica相关/mujica采访室.jpg"
+    },
+    "mujica_grand_stage": {
+      "type": "fixed",
+      "default": "演出、排练/Mujica相关/Mujica空旷大舞台.png"
+    },
+    "gwave_fountain": {
+      "type": "fixed",
+      "default": "演出、排练/Mujica相关/G：wave喷泉广场.jpg"
+    },
+    "agency_exterior": {
+      "type": "fixed",
+      "default": "演出、排练/Mujica相关/经纪公司外日.png",
+      "times": {
+        "夜晚": "演出、排练/Mujica相关/经纪公司外夜.jpg"
+      }
+    }
+  },
+  "aliases": {
+    "弦卷家会议室": "kokoro_meeting_room",
+    "弦卷心家会议室": "kokoro_meeting_room",
+    "公园里": "park",
+    "街边": "street",
+    "路边": "street",
+    "live house": "ring_stage",
+    "LiveHouse": "ring_stage",
+    "心家会议室": "kokoro_meeting_room",
+    "小美的房间": "misaki_room",
+    "爱音房间": "anon_room",
+    "灯房间": "tomori_room",
+    "立希房间": "taki_room",
+    "素世房间": "soyo_room",
+    "有咲仓库": "arisa_storehouse",
+    "Gwave": "gwave_lobby",
+    "爱音家里": "anon_living_room",
+    "灯家里": "tomori_living_room",
+    "立希家里": "taki_living_room",
+    "素世家里": "soyo_living_room",
+    "快乐国": "happy_kingdom_square",
+    "心家侧门": "kokoro_side_gate",
+    "心家正门": "kokoro_front_gate",
+    "有咲房间": "arisa_bedroom",
+    "美咲祖母家": "misaki_grandma_living_room",
+    "公园大舞台": "park_stage_large"
+  },
+  "rules": {
+    "学校": "campus",
+    "校园": "campus",
+    "中庭": "campus",
+    "校门": "school_gate",
+    "教室": "classroom",
+    "走廊": "hallway",
+    "天台": "rooftop",
+    "音乐室": "music_room",
+    "学生会": "student_council_room",
+    "学生会室": "student_council_room",
+    "体育馆": "gym",
+    "玄关": "entrance",
+    "礼堂": "auditorium",
+    "排练室": "rehearsal_room",
+    "公园": "park",
+    "花园": "garden",
+    "树林": "grove",
+    "小树林": "grove",
+    "车站": "station",
+    "电车": "train",
+    "街道": "street",
+    "街上": "street",
+    "街头": "street",
+    "小巷": "alley",
+    "唐人街": "chinatown",
+    "铁轨": "rail_track",
+    "办公室": "office",
+    "事务所": "agency_meeting_room",
+    "咖啡店": "cafe",
+    "咖啡厅": "cafe",
+    "家庭餐厅": "family_restaurant",
+    "餐厅": "family_restaurant",
+    "便利店": "convenience_store",
+    "医院": "hospital_front",
+    "病房": "hospital_ward",
+    "CiRCLE门口": "circle_entrance",
+    "CiRCLE后台": "circle_backstage",
+    "CiRCLE排练室": "circle_rehearsal",
+    "CiRCLE舞台": "circle_stage",
+    "CiRCLE": "circle_front",
+    "RiNG门口": "ring_entrance",
+    "RiNG后台": "ring_backstage",
+    "RiNG排练室": "ring_rehearsal",
+    "RiNG舞台": "ring_stage",
+    "RiNG": "ring_front",
+    "SPACE": "space_stage",
+    "舞台": "generic_stage",
+    "美咲的房间": "misaki_room",
+    "心的卧室": "kokoro_bedroom",
+    "弦卷心卧室": "kokoro_bedroom",
+    "弦卷心家走廊": "kokoro_hallway",
+    "花音的房间": "kanon_room",
+    "薰的房间": "kaoru_room",
+    "爱音的房间": "anon_room",
+    "灯的房间": "tomori_room",
+    "立希的房间": "taki_room",
+    "素世的房间": "soyo_room",
+    "爱音家门口": "anon_house_entrance",
+    "素世家客厅": "soyo_living_room",
+    "有咲的地下仓库": "arisa_storehouse",
+    "有咲家门口": "arisa_house_front",
+    "美咲祖母家客厅": "misaki_grandma_living_room",
+    "休息室": "mujica_rest_room",
+    "Mujica舞台": "mujica_stage",
+    "Mujica后台": "mujica_backstage",
+    "G:wave": "gwave_lobby",
+    "G：wave": "gwave_lobby",
+    "化妆间": "gwave_dressing_room",
+    "经纪公司": "agency_hall",
+    "经纪公司会议室": "agency_meeting",
+    "公园舞台": "park_stage_large",
+    "会场": "event_hall",
+    "演出厅": "auditorium_stage",
+    "演出厅休息室": "auditorium_rest",
+    "音乐节": "festival_stage",
+    "Galaxy舞台": "galaxy_stage",
+    "Galaxy走廊": "galaxy_hallway",
+    "Galaxy拉面馆": "galaxy_ramen",
+    "偶像工作室大厅": "idol_studio_hall",
+    "偶像事务所入口": "idol_agency_entrance",
+    "爱音家客厅": "anon_living_room",
+    "灯家客厅": "tomori_living_room",
+    "灯家楼下天桥": "tomori_skybridge",
+    "灯家阳台": "tomori_balcony",
+    "立希家客厅": "taki_living_room",
+    "立希家外部": "taki_house_exterior",
+    "诗船家客厅": "shiifune_living_room",
+    "诗船家小练习室": "shiifune_practice_room",
+    "诗船家玄关": "shiifune_entrance",
+    "诗船家中庭": "shiifune_courtyard",
+    "素世家大楼": "soyo_building_exterior",
+    "素世家一楼大堂": "soyo_lobby",
+    "素世家阳台": "soyo_balcony",
+    "素世旧家": "soyo_old_home",
+    "要家餐厅": "kaname_dining_room",
+    "要家厨房": "kaname_kitchen",
+    "要家客厅": "kaname_living_room",
+    "要家玄关": "kaname_entrance",
+    "要家院门口": "kaname_gate",
+    "要家中庭": "kaname_courtyard",
+    "快乐国城堡": "happy_kingdom_castle",
+    "快乐国城堡内": "happy_kingdom_castle",
+    "快乐国客房": "happy_kingdom_guest_room",
+    "快乐国广场": "happy_kingdom_square",
+    "美咲祖母房外景": "misaki_grandma_exterior",
+    "弦卷心家侧门": "kokoro_side_gate",
+    "弦卷心家正门": "kokoro_front_gate",
+    "育美卧室": "hagumi_room",
+    "香澄家客厅": "kasumi_living_room",
+    "香澄的房间": "kasumi_room",
+    "多惠家客厅": "tae_living_room",
+    "多惠卧室": "tae_room",
+    "里美的房间": "rimi_room",
+    "纱绫的房间": "saaya_room",
+    "纱绫家客厅": "saaya_living_room",
+    "有咲卧室": "arisa_bedroom",
+    "流星堂": "ryuseido",
+    "室外舞台": "outdoor_stage",
+    "室外演出后台": "outdoor_backstage",
+    "后台走廊": "public_backstage_hallway",
+    "武道馆": "budokan_entrance",
+    "演出厅门口": "auditorium_entrance",
+    "偶像舞台": "idol_stage",
+    "RiNG天台": "ring_rooftop",
+    "dub大厅": "dub_lobby",
+    "采访室": "interview_room",
+    "空旷大舞台": "mujica_grand_stage",
+    "喷泉广场": "gwave_fountain",
+    "经纪公司外": "agency_exterior"
+  }
+}

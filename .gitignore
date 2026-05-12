@@ -1,0 +1,16 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+build/
+dist/
+output/
+release/
+*.spec
+desktop.ini
+*.tmp
+README.md
+SCENE_MAINTENANCE.md
+图标.ico
+图标.png

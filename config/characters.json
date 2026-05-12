@@ -1,0 +1,934 @@
+{
+  "kasumi": {
+    "display_name": "香澄",
+    "full_name": "户山香澄",
+    "band": "Poppin'Party",
+    "generic_character_id": "001",
+    "default_expression": "default",
+    "default_motion_31": "kasumi/idle01",
+    "default_motion_generic": "idle01",
+    "default_model_31": null,
+    "default_model_generic": "kasumi/001_school_winter-2023model.json",
+    "models_31": {},
+    "models_generic": {
+      "school_winter": "kasumi/001_school_winter-2023model.json",
+      "school_summer": "kasumi/001_school_summer-2023model.json",
+      "casual_winter": "kasumi/001_casual_winter-2023model.json",
+      "casual_summer": "kasumi/001_casual_summer-2023model.json",
+      "casual": "kasumi/001_casual-2023model.json",
+      "live": "kasumi/001_live_r_2023model.json"
+    }
+  },
+  "tae": {
+    "display_name": "多惠",
+    "full_name": "花园多惠",
+    "band": "Poppin'Party",
+    "generic_character_id": "002",
+    "default_expression": "default",
+    "default_motion_31": "tae/idle01",
+    "default_motion_generic": "idle01",
+    "default_model_31": null,
+    "default_model_generic": "tae/002_school_winter-2023model.json",
+    "models_31": {},
+    "models_generic": {
+      "school_winter": "tae/002_school_winter-2023model.json",
+      "school_summer": "tae/002_school_summer-2023model.json",
+      "casual_winter": "tae/002_casual_winter-2023model.json",
+      "casual_summer": "tae/002_casual_summer-2023model.json",
+      "casual": "tae/002_casual-2023model.json",
+      "live": "tae/002_live_r_2023model.json"
+    }
+  },
+  "rimi": {
+    "display_name": "里美",
+    "full_name": "牛込里美",
+    "band": "Poppin'Party",
+    "generic_character_id": "003",
+    "default_expression": "default",
+    "default_motion_31": "rimi/idle01",
+    "default_motion_generic": "idle01",
+    "default_model_31": null,
+    "default_model_generic": "rimi/003_school_winter-2023model.json",
+    "models_31": {},
+    "models_generic": {
+      "school_winter": "rimi/003_school_winter-2023model.json",
+      "school_summer": "rimi/003_school_summer-2023model.json",
+      "casual_winter": "rimi/003_casual_winter-2023model.json",
+      "casual_summer": "rimi/003_casual_summer-2023model.json",
+      "casual": "rimi/003_casual-2023model.json",
+      "live": "rimi/003_live_r_2023model.json"
+    }
+  },
+  "saya": {
+    "display_name": "沙绫",
+    "full_name": "山吹沙绫",
+    "band": "Poppin'Party",
+    "generic_character_id": "004",
+    "default_expression": "default",
+    "default_motion_31": "saya/idle01",
+    "default_motion_generic": "idle01",
+    "default_model_31": null,
+    "default_model_generic": "saya/004_school_winter-2023model.json",
+    "models_31": {},
+    "models_generic": {
+      "school_winter": "saya/004_school_winter-2023model.json",
+      "school_summer": "saya/004_school_summer-2023model.json",
+      "casual_winter": "saya/004_casual_winter-2023model.json",
+      "casual_summer": "saya/004_casual_summer-2023model.json",
+      "casual": "saya/004_casual-2023model.json",
+      "live": "saya/004_live_r_2023model.json"
+    }
+  },
+  "arisa": {
+    "display_name": "有咲",
+    "full_name": "市谷有咲",
+    "band": "Poppin'Party",
+    "generic_character_id": "005",
+    "default_expression": "default",
+    "default_motion_31": "arisa/idle01",
+    "default_motion_generic": "idle01",
+    "default_model_31": null,
+    "default_model_generic": "arisa/005_school_winter-2023model.json",
+    "models_31": {},
+    "models_generic": {
+      "school_winter": "arisa/005_school_winter-2023model.json",
+      "school_summer": "arisa/005_school_summer-2023model.json",
+      "casual_winter": "arisa/005_casual_winter-2023model.json",
+      "casual_summer": "arisa/005_casual_summer-2023model.json",
+      "casual": "arisa/005_casual-2023model.json",
+      "live": "arisa/005_live_r_2023model.json"
+    }
+  },
+  "ran": {
+    "display_name": "兰",
+    "full_name": "美竹兰",
+    "band": "Afterglow",
+    "generic_character_id": "006",
+    "default_expression": "default",
+    "default_motion_31": "ran/idle01",
+    "default_motion_generic": "idle01",
+    "default_model_31": null,
+    "default_model_generic": "ran/006_school_winter-2023model.json",
+    "models_31": {},
+    "models_generic": {
+      "school_winter": "ran/006_school_winter-2023model.json",
+      "school_summer": "ran/006_school_summer-2023model.json",
+      "casual_winter": "ran/006_casual_winter-2023model.json",
+      "casual_summer": "ran/006_casual_summer-2023model.json",
+      "casual": "ran/006_casual-2023model.json",
+      "live": "ran/006_live_r_2023model.json"
+    }
+  },
+  "moca": {
+    "display_name": "摩卡",
+    "full_name": "青叶摩卡",
+    "band": "Afterglow",
+    "generic_character_id": "007",
+    "default_expression": "default",
+    "default_motion_31": "moca/idle01",
+    "default_motion_generic": "idle01",
+    "default_model_31": null,
+    "default_model_generic": "moca/007_school_winter-2023model.json",
+    "models_31": {},
+    "models_generic": {
+      "school_winter": "moca/007_school_winter-2023model.json",
+      "school_summer": "moca/007_school_summer-2023model.json",
+      "casual_winter": "moca/007_casual_winter-2023model.json",
+      "casual_summer": "moca/007_casual_summer-2023model.json",
+      "casual": "moca/007_casual-2023model.json",
+      "live": "moca/007_live_r_2023model.json"
+    }
+  },
+  "himari": {
+    "display_name": "绯玛丽",
+    "full_name": "上原绯玛丽",
+    "band": "Afterglow",
+    "generic_character_id": "008",
+    "default_expression": "default",
+    "default_motion_31": "himari/idle01",
+    "default_motion_generic": "idle01",
+    "default_model_31": null,
+    "default_model_generic": "himari/008_school_winter-2023model.json",
+    "models_31": {},
+    "models_generic": {
+      "school_winter": "himari/008_school_winter-2023model.json",
+      "school_summer": "himari/008_school_summer-2023model.json",
+      "casual_winter": "himari/008_casual_winter-2023model.json",
+      "casual_summer": "himari/008_casual_summer-2023model.json",
+      "casual": "himari/008_casual-2023model.json",
+      "live": "himari/008_live_r_2023model.json"
+    }
+  },
+  "tomoe": {
+    "display_name": "巴",
+    "full_name": "宇田川巴",
+    "band": "Afterglow",
+    "generic_character_id": "009",
+    "default_expression": "default",
+    "default_motion_31": "tomoe/idle01",
+    "default_motion_generic": "idle01",
+    "default_model_31": null,
+    "default_model_generic": "tomoe/009_school_winter-2023model.json",
+    "models_31": {},
+    "models_generic": {
+      "school_winter": "tomoe/009_school_winter-2023model.json",
+      "school_summer": "tomoe/009_school_summer-2023model.json",
+      "casual_winter": "tomoe/009_casual_winter-2023model.json",
+      "casual_summer": "tomoe/009_casual_summer-2023model.json",
+      "casual": "tomoe/009_casual-2023model.json",
+      "live": "tomoe/009_live_r_2023model.json"
+    }
+  },
+  "tsugumi": {
+    "display_name": "鸫",
+    "full_name": "羽泽鸫",
+    "band": "Afterglow",
+    "generic_character_id": "010",
+    "default_expression": "default",
+    "default_motion_31": "tsugumi/idle01",
+    "default_motion_generic": "idle01",
+    "default_model_31": null,
+    "default_model_generic": "tsugumi/010_school_winter-2023model.json",
+    "models_31": {},
+    "models_generic": {
+      "school_winter": "tsugumi/010_school_winter-2023model.json",
+      "school_summer": "tsugumi/010_school_summer-2023model.json",
+      "casual_winter": "tsugumi/010_casual_winter-2023model.json",
+      "casual_summer": "tsugumi/010_casual_summer-2023model.json",
+      "casual": "tsugumi/010_casual-2023model.json",
+      "live": "tsugumi/010_live_r_2023model.json"
+    }
+  },
+  "kokoro": {
+    "display_name": "弦卷心",
+    "full_name": "弦卷心",
+    "band": "Hello, Happy World!",
+    "generic_character_id": "011",
+    "default_expression": "default",
+    "default_motion_31": "kokoro/idle01",
+    "default_motion_generic": "idle01",
+    "default_model_31": null,
+    "default_model_generic": "kokoro/011_school_winter-2023model.json",
+    "models_31": {},
+    "models_generic": {
+      "school_winter": "kokoro/011_school_winter-2023model.json",
+      "school_summer": "kokoro/011_school_summer-2023model.json",
+      "casual_winter": "kokoro/011_casual_winter-2023model.json",
+      "casual_summer": "kokoro/011_casual_summer-2023model.json",
+      "casual": "kokoro/011_casual-2023model.json",
+      "live": "kokoro/011_live_r_2023model.json"
+    }
+  },
+  "kaoru": {
+    "display_name": "濑田薰",
+    "full_name": "濑田薰",
+    "band": "Hello, Happy World!",
+    "generic_character_id": "012",
+    "default_expression": "default",
+    "default_motion_31": "kaoru/idle01",
+    "default_motion_generic": "idle01",
+    "default_model_31": null,
+    "default_model_generic": "kaoru/012_school_winter-2023model.json",
+    "models_31": {},
+    "models_generic": {
+      "school_winter": "kaoru/012_school_winter-2023model.json",
+      "school_summer": "kaoru/012_school_summer-2023model.json",
+      "casual_winter": "kaoru/012_casual_winter-2023model.json",
+      "casual_summer": "kaoru/012_casual_summer-2023model.json",
+      "casual": "kaoru/012_casual-2023model.json",
+      "live": "kaoru/012_live_r_2023model.json"
+    }
+  },
+  "hagumi": {
+    "display_name": "北泽育美",
+    "full_name": "北泽育美",
+    "band": "Hello, Happy World!",
+    "generic_character_id": "013",
+    "default_expression": "default",
+    "default_motion_31": "hagumi/idle01",
+    "default_motion_generic": "idle01",
+    "default_model_31": null,
+    "default_model_generic": "hagumi/013_school_winter-2023model.json",
+    "models_31": {},
+    "models_generic": {
+      "school_winter": "hagumi/013_school_winter-2023model.json",
+      "school_summer": "hagumi/013_school_summer-2023model.json",
+      "casual_winter": "hagumi/013_casual_winter-2023model.json",
+      "casual_summer": "hagumi/013_casual_summer-2023model.json",
+      "casual": "hagumi/013_casual-2023model.json",
+      "live": "hagumi/013_live_r_2023model.json"
+    }
+  },
+  "kanon": {
+    "display_name": "松原花音",
+    "full_name": "松原花音",
+    "band": "Hello, Happy World!",
+    "generic_character_id": "014",
+    "default_expression": "default",
+    "default_motion_31": "kanon/idle01",
+    "default_motion_generic": "idle01",
+    "default_model_31": null,
+    "default_model_generic": "kanon/014_school_winter-2023model.json",
+    "models_31": {},
+    "models_generic": {
+      "school_winter": "kanon/014_school_winter-2023model.json",
+      "school_summer": "kanon/014_school_summer-2023model.json",
+      "casual_winter": "kanon/014_casual_winter-2023model.json",
+      "casual_summer": "kanon/014_casual_summer-2023model.json",
+      "casual": "kanon/014_casual-2023model.json",
+      "live": "kanon/014_live_r_2023model.json"
+    }
+  },
+  "misaki": {
+    "display_name": "奥泽美咲",
+    "full_name": "奥泽美咲",
+    "band": "Hello, Happy World!",
+    "generic_character_id": "015",
+    "default_expression": "default",
+    "default_motion_31": "misaki/idle01",
+    "default_motion_generic": "idle01",
+    "default_model_31": null,
+    "default_model_generic": "misaki/015_school_winter-2023model.json",
+    "models_31": {},
+    "models_generic": {
+      "school_winter": "misaki/015_school_winter-2023model.json",
+      "school_summer": "misaki/015_school_summer-2023model.json",
+      "casual_winter": "misaki/015_casual_winter-2023model.json",
+      "casual_summer": "misaki/015_casual_summer-2023model.json",
+      "casual": "misaki/015_casual-2023model.json",
+      "live": "misaki/015_live_r_2023model.json"
+    }
+  },
+  "aya": {
+    "display_name": "彩",
+    "full_name": "丸山彩",
+    "band": "Pastel*Palettes",
+    "generic_character_id": "016",
+    "default_expression": "default",
+    "default_motion_31": "aya/idle01",
+    "default_motion_generic": "idle01",
+    "default_model_31": null,
+    "default_model_generic": "aya/016_school_winter-2023model.json",
+    "models_31": {},
+    "models_generic": {
+      "school_winter": "aya/016_school_winter-2023model.json",
+      "school_summer": "aya/016_school_summer-2023model.json",
+      "casual_winter": "aya/016_casual_winter-2023model.json",
+      "casual_summer": "aya/016_casual_summer-2023model.json",
+      "casual": "aya/016_casual-2023model.json",
+      "live": "aya/016_live_r_2023model.json"
+    }
+  },
+  "hina": {
+    "display_name": "日菜",
+    "full_name": "冰川日菜",
+    "band": "Pastel*Palettes",
+    "generic_character_id": "017",
+    "default_expression": "default",
+    "default_motion_31": "hina/idle01",
+    "default_motion_generic": "idle01",
+    "default_model_31": null,
+    "default_model_generic": "hina/017_school_winter-2023model.json",
+    "models_31": {},
+    "models_generic": {
+      "school_winter": "hina/017_school_winter-2023model.json",
+      "school_summer": "hina/017_school_summer-2023model.json",
+      "casual_winter": "hina/017_casual_winter-2023model.json",
+      "casual_summer": "hina/017_casual_summer-2023model.json",
+      "casual": "hina/017_casual-2023model.json",
+      "live": "hina/017_live_r_2023model.json"
+    }
+  },
+  "chisato": {
+    "display_name": "千圣",
+    "full_name": "白鹭千圣",
+    "band": "Pastel*Palettes",
+    "generic_character_id": "018",
+    "default_expression": "default",
+    "default_motion_31": "chisato/idle01",
+    "default_motion_generic": "idle01",
+    "default_model_31": null,
+    "default_model_generic": "chisato/018_school_winter-2023model.json",
+    "models_31": {},
+    "models_generic": {
+      "school_winter": "chisato/018_school_winter-2023model.json",
+      "school_summer": "chisato/018_school_summer-2023model.json",
+      "casual_winter": "chisato/018_casual_winter-2023model.json",
+      "casual_summer": "chisato/018_casual_summer-2023model.json",
+      "casual": "chisato/018_casual-2023model.json",
+      "live": "chisato/018_live_r_2023model.json"
+    }
+  },
+  "maya": {
+    "display_name": "麻弥",
+    "full_name": "大和麻弥",
+    "band": "Pastel*Palettes",
+    "generic_character_id": "019",
+    "default_expression": "default",
+    "default_motion_31": "maya/idle01",
+    "default_motion_generic": "idle01",
+    "default_model_31": null,
+    "default_model_generic": "maya/019_school_winter-2023model.json",
+    "models_31": {},
+    "models_generic": {
+      "school_winter": "maya/019_school_winter-2023model.json",
+      "school_summer": "maya/019_school_summer-2023model.json",
+      "casual_winter": "maya/019_casual_winter-2023model.json",
+      "casual_summer": "maya/019_casual_summer-2023model.json",
+      "casual": "maya/019_casual-2023model.json",
+      "live": "maya/019_live_r_2023model.json"
+    }
+  },
+  "eve": {
+    "display_name": "伊芙",
+    "full_name": "若宫伊芙",
+    "band": "Pastel*Palettes",
+    "generic_character_id": "020",
+    "default_expression": "default",
+    "default_motion_31": "eve/idle01",
+    "default_motion_generic": "idle01",
+    "default_model_31": null,
+    "default_model_generic": "eve/020_school_winter-2023model.json",
+    "models_31": {},
+    "models_generic": {
+      "school_winter": "eve/020_school_winter-2023model.json",
+      "school_summer": "eve/020_school_summer-2023model.json",
+      "casual_winter": "eve/020_casual_winter-2023model.json",
+      "casual_summer": "eve/020_casual_summer-2023model.json",
+      "casual": "eve/020_casual-2023model.json",
+      "live": "eve/020_live_r_2023model.json"
+    }
+  },
+  "yukina": {
+    "display_name": "友希那",
+    "full_name": "凑友希那",
+    "band": "Roselia",
+    "generic_character_id": "021",
+    "default_expression": "default",
+    "default_motion_31": "yukina/idle01",
+    "default_motion_generic": "idle01",
+    "default_model_31": null,
+    "default_model_generic": "yukina/021_school_winter-2023model.json",
+    "models_31": {},
+    "models_generic": {
+      "school_winter": "yukina/021_school_winter-2023model.json",
+      "school_summer": "yukina/021_school_summer-2023model.json",
+      "casual_winter": "yukina/021_casual_winter-2023model.json",
+      "casual_summer": "yukina/021_casual_summer-2023model.json",
+      "casual": "yukina/021_casual-2023model.json",
+      "live": "yukina/021_live_r_2023model.json"
+    }
+  },
+  "sayo": {
+    "display_name": "纱夜",
+    "full_name": "冰川纱夜",
+    "band": "Roselia",
+    "generic_character_id": "022",
+    "default_expression": "default",
+    "default_motion_31": "sayo/idle01",
+    "default_motion_generic": "idle01",
+    "default_model_31": null,
+    "default_model_generic": "sayo/022_school_winter-2023model.json",
+    "models_31": {},
+    "models_generic": {
+      "school_winter": "sayo/022_school_winter-2023model.json",
+      "school_summer": "sayo/022_school_summer-2023model.json",
+      "casual_winter": "sayo/022_casual_winter-2023model.json",
+      "casual_summer": "sayo/022_casual_summer-2023model.json",
+      "casual": "sayo/022_casual-2023model.json",
+      "live": "sayo/022_live_r_2023model.json"
+    }
+  },
+  "lisa": {
+    "display_name": "莉莎",
+    "full_name": "今井莉莎",
+    "band": "Roselia",
+    "generic_character_id": "023",
+    "default_expression": "default",
+    "default_motion_31": "lisa/idle01",
+    "default_motion_generic": "idle01",
+    "default_model_31": null,
+    "default_model_generic": "lisa/023_school_winter-2023model.json",
+    "models_31": {},
+    "models_generic": {
+      "school_winter": "lisa/023_school_winter-2023model.json",
+      "school_summer": "lisa/023_school_summer-2023model.json",
+      "casual_winter": "lisa/023_casual_winter-2023model.json",
+      "casual_summer": "lisa/023_casual_summer-2023model.json",
+      "casual": "lisa/023_casual-2023model.json",
+      "live": "lisa/023_live_r_2023model.json"
+    }
+  },
+  "ako": {
+    "display_name": "亚子",
+    "full_name": "宇田川亚子",
+    "band": "Roselia",
+    "generic_character_id": "024",
+    "default_expression": "default",
+    "default_motion_31": "ako/idle01",
+    "default_motion_generic": "idle01",
+    "default_model_31": null,
+    "default_model_generic": "ako/024_school_winter-2023model.json",
+    "models_31": {},
+    "models_generic": {
+      "school_winter": "ako/024_school_winter-2023model.json",
+      "school_summer": "ako/024_school_summer-2023model.json",
+      "casual_winter": "ako/024_casual_winter-2023model.json",
+      "casual_summer": "ako/024_casual_summer-2023model.json",
+      "casual": "ako/024_casual-2023model.json",
+      "live": "ako/024_live_r_2023model.json"
+    }
+  },
+  "rinko": {
+    "display_name": "燐子",
+    "full_name": "白金燐子",
+    "band": "Roselia",
+    "generic_character_id": "025",
+    "default_expression": "default",
+    "default_motion_31": "rinko/idle01",
+    "default_motion_generic": "idle01",
+    "default_model_31": null,
+    "default_model_generic": "rinko/025_school_winter-2023model.json",
+    "models_31": {},
+    "models_generic": {
+      "school_winter": "rinko/025_school_winter-2023model.json",
+      "school_summer": "rinko/025_school_summer-2023model.json",
+      "casual_winter": "rinko/025_casual_winter-2023model.json",
+      "casual_summer": "rinko/025_casual_summer-2023model.json",
+      "casual": "rinko/025_casual-2023model.json",
+      "live": "rinko/025_live_r_2023model.json"
+    }
+  },
+  "mashiro": {
+    "display_name": "真白",
+    "full_name": "仓田真白",
+    "band": "Morfonica",
+    "generic_character_id": "026",
+    "default_expression": "default",
+    "default_motion_31": "mashiro/idle01",
+    "default_motion_generic": "idle01",
+    "default_model_31": null,
+    "default_model_generic": "mashiro/026_school_winter-2023model.json",
+    "models_31": {},
+    "models_generic": {
+      "school_winter": "mashiro/026_school_winter-2023model.json",
+      "school_summer": "mashiro/026_school_summer-2023model.json",
+      "casual_winter": "mashiro/026_casual_winter-2023model.json",
+      "casual_summer": "mashiro/026_casual_summer-2023model.json",
+      "casual": "mashiro/026_casual-2023model.json",
+      "live": "mashiro/026_live_r_2023model.json"
+    }
+  },
+  "toko": {
+    "display_name": "透子",
+    "full_name": "桐谷透子",
+    "band": "Morfonica",
+    "generic_character_id": "027",
+    "default_expression": "default",
+    "default_motion_31": "toko/idle01",
+    "default_motion_generic": "idle01",
+    "default_model_31": null,
+    "default_model_generic": "toko/027_school_winter-2023model.json",
+    "models_31": {},
+    "models_generic": {
+      "school_winter": "toko/027_school_winter-2023model.json",
+      "school_summer": "toko/027_school_summer-2023model.json",
+      "casual_winter": "toko/027_casual_winter-2023model.json",
+      "casual_summer": "toko/027_casual_summer-2023model.json",
+      "casual": "toko/027_casual-2023model.json",
+      "live": "toko/027_live_r_2023model.json"
+    }
+  },
+  "nanami": {
+    "display_name": "七深",
+    "full_name": "广町七深",
+    "band": "Morfonica",
+    "generic_character_id": "028",
+    "default_expression": "default",
+    "default_motion_31": "nanami/idle01",
+    "default_motion_generic": "idle01",
+    "default_model_31": null,
+    "default_model_generic": "nanami/028_school_winter-2023model.json",
+    "models_31": {},
+    "models_generic": {
+      "school_winter": "nanami/028_school_winter-2023model.json",
+      "school_summer": "nanami/028_school_summer-2023model.json",
+      "casual_winter": "nanami/028_casual_winter-2023model.json",
+      "casual_summer": "nanami/028_casual_summer-2023model.json",
+      "casual": "nanami/028_casual-2023model.json",
+      "live": "nanami/028_live_r_2023model.json"
+    }
+  },
+  "tsukushi": {
+    "display_name": "筑紫",
+    "full_name": "二叶筑紫",
+    "band": "Morfonica",
+    "generic_character_id": "029",
+    "default_expression": "default",
+    "default_motion_31": "tsukushi/idle01",
+    "default_motion_generic": "idle01",
+    "default_model_31": null,
+    "default_model_generic": "tsukushi/029_school_winter-2023model.json",
+    "models_31": {},
+    "models_generic": {
+      "school_winter": "tsukushi/029_school_winter-2023model.json",
+      "school_summer": "tsukushi/029_school_summer-2023model.json",
+      "casual_winter": "tsukushi/029_casual_winter-2023model.json",
+      "casual_summer": "tsukushi/029_casual_summer-2023model.json",
+      "casual": "tsukushi/029_casual-2023model.json",
+      "live": "tsukushi/029_live_r_2023model.json"
+    }
+  },
+  "rui": {
+    "display_name": "瑠唯",
+    "full_name": "八潮瑠唯",
+    "band": "Morfonica",
+    "generic_character_id": "030",
+    "default_expression": "default",
+    "default_motion_31": "rui/idle01",
+    "default_motion_generic": "idle01",
+    "default_model_31": null,
+    "default_model_generic": "rui/030_school_winter-2023model.json",
+    "models_31": {},
+    "models_generic": {
+      "school_winter": "rui/030_school_winter-2023model.json",
+      "school_summer": "rui/030_school_summer-2023model.json",
+      "casual_winter": "rui/030_casual_winter-2023model.json",
+      "casual_summer": "rui/030_casual_summer-2023model.json",
+      "casual": "rui/030_casual-2023model.json",
+      "live": "rui/030_live_r_2023model.json"
+    }
+  },
+  "layer": {
+    "display_name": "LAYER",
+    "full_name": "和奏瑞依",
+    "band": "RAISE A SUILEN",
+    "generic_character_id": "031",
+    "default_expression": "default",
+    "default_motion_31": "layer/idle01",
+    "default_motion_generic": "idle01",
+    "default_model_31": null,
+    "default_model_generic": "layer/031_school_winter-2023model.json",
+    "models_31": {},
+    "models_generic": {
+      "school_winter": "layer/031_school_winter-2023model.json",
+      "school_summer": "layer/031_school_summer-2023model.json",
+      "casual_winter": "layer/031_casual_winter-2023model.json",
+      "casual_summer": "layer/031_casual_summer-2023model.json",
+      "casual": "layer/031_casual-2023model.json",
+      "live": "layer/031_live_r_2023model.json"
+    }
+  },
+  "lock": {
+    "display_name": "LOCK",
+    "full_name": "朝日六花",
+    "band": "RAISE A SUILEN",
+    "generic_character_id": "032",
+    "default_expression": "default",
+    "default_motion_31": "lock/idle01",
+    "default_motion_generic": "idle01",
+    "default_model_31": null,
+    "default_model_generic": "lock/032_school_winter-2023model.json",
+    "models_31": {},
+    "models_generic": {
+      "school_winter": "lock/032_school_winter-2023model.json",
+      "school_summer": "lock/032_school_summer-2023model.json",
+      "casual_winter": "lock/032_casual_winter-2023model.json",
+      "casual_summer": "lock/032_casual_summer-2023model.json",
+      "casual": "lock/032_casual-2023model.json",
+      "live": "lock/032_live_r_2023model.json"
+    }
+  },
+  "masking": {
+    "display_name": "MASKING",
+    "full_name": "佐藤益木",
+    "band": "RAISE A SUILEN",
+    "generic_character_id": "033",
+    "default_expression": "default",
+    "default_motion_31": "masking/idle01",
+    "default_motion_generic": "idle01",
+    "default_model_31": null,
+    "default_model_generic": "masking/033_school_winter-2023model.json",
+    "models_31": {},
+    "models_generic": {
+      "school_winter": "masking/033_school_winter-2023model.json",
+      "school_summer": "masking/033_school_summer-2023model.json",
+      "casual_winter": "masking/033_casual_winter-2023model.json",
+      "casual_summer": "masking/033_casual_summer-2023model.json",
+      "casual": "masking/033_casual-2023model.json",
+      "live": "masking/033_live_r_2023model.json"
+    }
+  },
+  "pareo": {
+    "display_name": "PAREO",
+    "full_name": "鳰原令王那",
+    "band": "RAISE A SUILEN",
+    "generic_character_id": "034",
+    "default_expression": "default",
+    "default_motion_31": "pareo/idle01",
+    "default_motion_generic": "idle01",
+    "default_model_31": null,
+    "default_model_generic": "pareo/034_school_winter-2023model.json",
+    "models_31": {},
+    "models_generic": {
+      "school_winter": "pareo/034_school_winter-2023model.json",
+      "school_summer": "pareo/034_school_summer-2023model.json",
+      "casual_winter": "pareo/034_casual_winter-2023model.json",
+      "casual_summer": "pareo/034_casual_summer-2023model.json",
+      "casual": "pareo/034_casual-2023model.json",
+      "live": "pareo/034_live_r_2023model.json"
+    }
+  },
+  "chuchu": {
+    "display_name": "CHU²",
+    "full_name": "珠手知由",
+    "band": "RAISE A SUILEN",
+    "generic_character_id": "035",
+    "default_expression": "default",
+    "default_motion_31": "chuchu/idle01",
+    "default_motion_generic": "idle01",
+    "default_model_31": null,
+    "default_model_generic": "chuchu/035_school_winter-2023model.json",
+    "models_31": {},
+    "models_generic": {
+      "school_winter": "chuchu/035_school_winter-2023model.json",
+      "school_summer": "chuchu/035_school_summer-2023model.json",
+      "casual_winter": "chuchu/035_casual_winter-2023model.json",
+      "casual_summer": "chuchu/035_casual_summer-2023model.json",
+      "casual": "chuchu/035_casual-2023model.json",
+      "live": "chuchu/035_live_r_2023model.json"
+    }
+  },
+  "tomori": {
+    "display_name": "灯",
+    "full_name": "高松灯",
+    "band": "MyGO!!!!!",
+    "generic_character_id": "036",
+    "default_expression": "default",
+    "default_motion_31": "tomori/idle01",
+    "default_motion_generic": "idle01",
+    "default_model_31": "tomori/school_winter-2023/model.json",
+    "default_model_generic": "tomori/036_school_winter-2023model.json",
+    "models_31": {
+      "school_winter": "tomori/school_winter-2023/model.json",
+      "school_summer": "tomori/school_summer-2023/model.json",
+      "casual": "tomori/casual-2023/model.json",
+      "live": "tomori/live_default/model.json"
+    },
+    "models_generic": {
+      "school_winter": "tomori/036_school_winter-2023model.json",
+      "school_summer": "tomori/036_school_summer-2023model.json",
+      "casual_winter": "tomori/036_casual_winter-2023model.json",
+      "casual_summer": "tomori/036_casual_summer-2023model.json",
+      "casual": "tomori/036_casual-2023model.json",
+      "live": "tomori/036_live_r_2023model.json"
+    }
+  },
+  "anon": {
+    "display_name": "爱音",
+    "full_name": "千早爱音",
+    "band": "MyGO!!!!!",
+    "generic_character_id": "037",
+    "default_expression": "default",
+    "default_motion_31": "anon/idle01",
+    "default_motion_generic": "idle01",
+    "default_model_31": "anon/school_winter-2023/model.json",
+    "default_model_generic": "anon/037_school_winter-2023model.json",
+    "models_31": {
+      "school_winter": "anon/school_winter-2023/model.json",
+      "school_summer": "anon/school_summer-2023/model.json",
+      "casual": "anon/casual-2023/model.json",
+      "live": "anon/live_default/model.json"
+    },
+    "models_generic": {
+      "school_winter": "anon/037_school_winter-2023model.json",
+      "school_summer": "anon/037_school_summer-2023model.json",
+      "casual_winter": "anon/037_casual_winter-2023model.json",
+      "casual_summer": "anon/037_casual_summer-2023model.json",
+      "casual": "anon/037_casual-2023model.json",
+      "live": "anon/037_live_r_2023model.json"
+    }
+  },
+  "rana": {
+    "display_name": "乐奈",
+    "full_name": "要乐奈",
+    "band": "MyGO!!!!!",
+    "generic_character_id": "038",
+    "default_expression": "default",
+    "default_motion_31": "rana/idle01",
+    "default_motion_generic": "idle01",
+    "default_model_31": "rana/school_winter-2023/model.json",
+    "default_model_generic": "rana/038_school_winter-2023model.json",
+    "models_31": {
+      "school_winter": "rana/school_winter-2023/model.json",
+      "school_summer": "rana/school_summer-2023/model.json",
+      "casual": "rana/casual-2023/model.json",
+      "live": "rana/live_default/model.json"
+    },
+    "models_generic": {
+      "school_winter": "rana/038_school_winter-2023model.json",
+      "school_summer": "rana/038_school_summer-2023model.json",
+      "casual_winter": "rana/038_casual_winter-2023model.json",
+      "casual_summer": "rana/038_casual_summer-2023model.json",
+      "casual": "rana/038_casual-2023model.json",
+      "live": "rana/038_live_r_2023model.json"
+    }
+  },
+  "soyo": {
+    "display_name": "素世",
+    "full_name": "长崎素世",
+    "band": "MyGO!!!!!",
+    "generic_character_id": "039",
+    "default_expression": "default",
+    "default_motion_31": "soyo/idle01",
+    "default_motion_generic": "idle01",
+    "default_model_31": "soyo/school_winter-2023/model.json",
+    "default_model_generic": "soyo/039_school_winter-2023model.json",
+    "models_31": {
+      "school_winter": "soyo/school_winter-2023/model.json",
+      "school_summer": "soyo/school_summer-2023/model.json",
+      "casual": "soyo/casual-2023/model.json",
+      "live": "soyo/live_default/model.json"
+    },
+    "models_generic": {
+      "school_winter": "soyo/039_school_winter-2023model.json",
+      "school_summer": "soyo/039_school_summer-2023model.json",
+      "casual_winter": "soyo/039_casual_winter-2023model.json",
+      "casual_summer": "soyo/039_casual_summer-2023model.json",
+      "casual": "soyo/039_casual-2023model.json",
+      "live": "soyo/039_live_r_2023model.json"
+    }
+  },
+  "taki": {
+    "display_name": "立希",
+    "full_name": "椎名立希",
+    "band": "MyGO!!!!!",
+    "generic_character_id": "040",
+    "default_expression": "default",
+    "default_motion_31": "taki/idle01",
+    "default_motion_generic": "idle01",
+    "default_model_31": "taki/school_winter-2023/model.json",
+    "default_model_generic": "taki/040_school_winter-2023model.json",
+    "models_31": {
+      "school_winter": "taki/school_winter-2023/model.json",
+      "school_summer": "taki/school_summer-2023/model.json",
+      "casual": "taki/casual-2023/model.json",
+      "live": "taki/live_default/model.json",
+      "arbeit": "taki/arbeit/model.json"
+    },
+    "models_generic": {
+      "school_winter": "taki/040_school_winter-2023model.json",
+      "school_summer": "taki/040_school_summer-2023model.json",
+      "casual_winter": "taki/040_casual_winter-2023model.json",
+      "casual_summer": "taki/040_casual_summer-2023model.json",
+      "casual": "taki/040_casual-2023model.json",
+      "live": "taki/040_live_r_2023model.json"
+    }
+  },
+  "sakiko": {
+    "display_name": "祥子",
+    "full_name": "丰川祥子",
+    "band": "Ave Mujica",
+    "generic_character_id": null,
+    "default_expression": "default",
+    "default_motion_31": "sakiko/idle01",
+    "default_motion_generic": "idle01",
+    "default_model_31": "sakiko/school_winter-2023/model.json",
+    "default_model_generic": null,
+    "models_31": {
+      "school_winter": "sakiko/school_winter-2023/model.json",
+      "school_summer": "sakiko/school_summer-2023/model.json",
+      "jh_school_winter": "sakiko/jh_school_winter-2023/model.json",
+      "casual": "sakiko/casual-2023/model.json",
+      "event": "sakiko/event_297_story_01/model.json"
+    },
+    "models_generic": {}
+  },
+  "mutsumi": {
+    "display_name": "睦",
+    "full_name": "若叶睦",
+    "band": "Ave Mujica",
+    "generic_character_id": null,
+    "default_expression": "default",
+    "default_motion_31": "mutsumi/idle01",
+    "default_motion_generic": "idle01",
+    "default_model_31": "mutsumi/school_winter-2023/model.json",
+    "default_model_generic": null,
+    "models_31": {
+      "school_winter": "mutsumi/school_winter-2023/model.json",
+      "school_summer": "mutsumi/school_summer-2023/model.json",
+      "casual": "mutsumi/casual-2023/model.json",
+      "event": "mutsumi/event_297_story_01/model.json"
+    },
+    "models_generic": {}
+  },
+  "uika": {
+    "display_name": "初华",
+    "full_name": "三角初华",
+    "band": "Ave Mujica",
+    "generic_character_id": null,
+    "default_expression": "default",
+    "default_motion_31": "uika/idle01",
+    "default_motion_generic": "idle01",
+    "default_model_31": "uika/school_winter-2023/model.json",
+    "default_model_generic": null,
+    "models_31": {
+      "school_winter": "uika/school_winter-2023/model.json",
+      "school_summer": "uika/school_summer-2023/model.json",
+      "casual": "uika/casual-2023/model.json",
+      "casual_nocap": "uika/casual-2023_nocap/model.json",
+      "sumimi": "uika/sumimi/model.json",
+      "event": "uika/event_297_story_01/model.json"
+    },
+    "models_generic": {}
+  },
+  "mana": {
+    "display_name": "真奈",
+    "full_name": "纯田真奈",
+    "band": "sumimi",
+    "generic_character_id": null,
+    "default_expression": "default",
+    "default_motion_31": "mana/idle01",
+    "default_motion_generic": "idle01",
+    "default_model_31": "mana/sumimi/model.json",
+    "default_model_generic": null,
+    "models_31": {
+      "sumimi": "mana/sumimi/model.json"
+    },
+    "models_generic": {}
+  },
+  "umiri": {
+    "display_name": "海铃",
+    "full_name": "八幡海铃",
+    "band": "Ave Mujica",
+    "generic_character_id": null,
+    "default_expression": "default",
+    "default_motion_31": "umiri/idle01",
+    "default_motion_generic": "idle01",
+    "default_model_31": "umiri/school_winter-2023/model.json",
+    "default_model_generic": null,
+    "models_31": {
+      "school_winter": "umiri/school_winter-2023/model.json",
+      "school_summer": "umiri/school_summer-2023/model.json",
+      "casual": "umiri/casual-2023/model.json",
+      "event": "umiri/event_297_story_01/model.json"
+    },
+    "models_generic": {}
+  },
+  "nyamu": {
+    "display_name": "若麦",
+    "full_name": "祐天寺若麦",
+    "band": "Ave Mujica",
+    "generic_character_id": null,
+    "default_expression": "default",
+    "default_motion_31": "nyamu/idle01",
+    "default_motion_generic": "idle01",
+    "default_model_31": "nyamu/casual-2023/model.json",
+    "default_model_generic": null,
+    "models_31": {
+      "casual": "nyamu/casual-2023/model.json",
+      "event": "nyamu/event_297_story_01/model.json"
+    },
+    "models_generic": {}
+  }
+}
