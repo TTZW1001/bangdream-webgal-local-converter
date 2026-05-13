@@ -3,7 +3,7 @@ from __future__ import annotations
 from pathlib import Path
 
 from .config_loader import load_config
-from .models import ConversionResult
+from .models import ConversionResult, FigureResourceIndex
 from .parser import parse_text
 from .speaker_resolver import SpeakerResolver
 from .webgal_generator import WebGALGenerator
@@ -20,6 +20,7 @@ def convert_text(
     segment_scene_locks: dict[int, str] | None = None,
     figure_controls: dict[str, dict[str, str]] | None = None,
     figure_event_overrides: dict[int, dict[str, str]] | None = None,
+    figure_resource_index: FigureResourceIndex | None = None,
 ) -> ConversionResult:
     # The conversion pipeline is intentionally linear:
     # raw text -> parsed segments -> resolved speakers -> generated script.
@@ -38,6 +39,7 @@ def convert_text(
         segment_scene_locks=segment_scene_locks,
         figure_controls=figure_controls,
         figure_event_overrides=figure_event_overrides,
+        figure_resource_index=figure_resource_index,
     )
     script, pending_items = generator.generate(resolved, pending)
     return ConversionResult(script=script, pending_items=pending_items, segments=resolved)

@@ -1,9 +1,12 @@
 from __future__ import annotations
 
 from pathlib import Path
+import tempfile
 
 from src.config_loader import load_config
 from src.converter import convert_text
+from src.figure_resource_index import scan_figure_directory
+from src.models import FigureCharacterEntry, FigureModelEntry, FigureResourceIndex
 from src.parser import parse_text
 from src.speaker_resolver import SpeakerResolver
 
@@ -19,6 +22,140 @@ def test_config_loads_full_character_table() -> None:
     assert config.aliases["灯"] == "tomori"
     assert config.characters["kasumi"].generic_character_id == "001"
     assert config.characters["taki"].generic_character_id == "040"
+
+
+def test_figure_index_scans_legacy_directory_and_maps_character() -> None:
+    config = load_config(CONFIG_DIR)
+    with tempfile.TemporaryDirectory() as temp_dir:
+        root = Path(temp_dir)
+        legacy_dir = root / "户山 香澄" / "casual"
+        legacy_dir.mkdir(parents=True, exist_ok=True)
+        (legacy_dir / "idle01_default.png").write_bytes(b"png")
+        (legacy_dir / "idle01_smile.png").write_bytes(b"png")
+
+        index = scan_figure_directory(root, config)
+
+        assert "户山 香澄" in index.characters
+        character = index.characters["户山 香澄"]
+        assert character.mapped_character_id == "kasumi"
+        assert "casual" in character.models
+        assert character.models["casual"].resource_type == "legacy"
+        assert character.models["casual"].motions == ["idle01"]
+        assert character.models["casual"].expressions == ["default", "smile"]
+
+
+def test_figure_index_scans_live2d_directory_and_extracts_model_json_data() -> None:
+    config = load_config(CONFIG_DIR)
+    with tempfile.TemporaryDirectory() as temp_dir:
+        root = Path(temp_dir)
+        model_dir = root / "anon" / "school_winter-2023"
+        model_dir.mkdir(parents=True, exist_ok=True)
+        (model_dir / "texture_00.png").write_bytes(b"png")
+        (model_dir / "model.json").write_text(
+            """
+            {
+              "motions": {
+                "idle": { "File": "anon/idle01.motion3.json" },
+                "wave": { "File": "anon/wave01.motion3.json" }
+              },
+              "expressions": [
+                { "File": "anon/default.exp3.json" },
+                { "File": "anon/smile.exp3.json" }
+              ]
+            }
+            """.strip(),
+            encoding="utf-8",
+        )
+
+        index = scan_figure_directory(root, config)
+
+        assert "anon" in index.characters
+        character = index.characters["anon"]
+        assert character.mapped_character_id == "anon"
+        assert "school_winter-2023" in character.models
+        model = character.models["school_winter-2023"]
+        assert model.resource_type == "live2d_json"
+        assert model.model_path == "anon/school_winter-2023/model.json"
+        assert model.motions == ["idle01", "wave01"]
+        assert model.expressions == ["default", "smile"]
+
+
+def test_figure_index_manual_mapping_overrides_auto_resolution() -> None:
+    config = load_config(CONFIG_DIR)
+    with tempfile.TemporaryDirectory() as temp_dir:
+        root = Path(temp_dir)
+        legacy_dir = root / "小香香" / "default"
+        legacy_dir.mkdir(parents=True, exist_ok=True)
+        (legacy_dir / "idle01_default.png").write_bytes(b"png")
+
+        index = scan_figure_directory(root, config, manual_mappings={"小香香": "kasumi"})
+
+        character = index.characters["小香香"]
+        assert character.mapped_character_id == "kasumi"
+        assert character.mapping_source == "manual"
+
+
+def test_figure_index_ignores_live2d_texture_pngs_inside_model_tree() -> None:
+    config = load_config(CONFIG_DIR)
+    with tempfile.TemporaryDirectory() as temp_dir:
+        root = Path(temp_dir)
+        model_dir = root / "misaki" / "live2d" / "chara" / "015_4th_general_election_r_rip"
+        model_dir.mkdir(parents=True, exist_ok=True)
+        (model_dir / "model.json").write_text(
+            """
+            {
+              "motions": {
+                "idle": { "File": "misaki/idle01.motion3.json" }
+              },
+              "expressions": [
+                { "File": "misaki/default.exp3.json" }
+              ]
+            }
+            """.strip(),
+            encoding="utf-8",
+        )
+        (model_dir / "texture_01.png").write_bytes(b"png")
+        (model_dir / "texture_02.png").write_bytes(b"png")
+
+        index = scan_figure_directory(root, config)
+
+        assert "misaki" in index.characters
+        character = index.characters["misaki"]
+        assert len(character.models) == 1
+        model = character.models["015_4th_general_election_r_rip"]
+        assert model.resource_type == "live2d_json"
+        assert model.model_path == "misaki/live2d/chara/015_4th_general_election_r_rip/model.json"
+
+
+def test_figure_index_scans_legacy_model_json_files() -> None:
+    config = load_config(CONFIG_DIR)
+    with tempfile.TemporaryDirectory() as temp_dir:
+        root = Path(temp_dir)
+        character_dir = root / "hagumi"
+        character_dir.mkdir(parents=True, exist_ok=True)
+        (character_dir / "013_casual-2023model.json").write_text(
+            """
+            {
+              "motions": {
+                "idle": [{ "file": "live2d/chara/013_general_rip/idle01.mtn" }]
+              },
+              "expressions": [
+                { "name": "default", "file": "live2d/chara/013_general_rip/default.exp.json" },
+                { "name": "smile01", "file": "live2d/chara/013_general_rip/smile01.exp.json" }
+              ]
+            }
+            """.strip(),
+            encoding="utf-8",
+        )
+
+        index = scan_figure_directory(root, config)
+
+        character = index.characters["hagumi"]
+        model = character.models["casual-2023"]
+        assert model.resource_type == "legacy_json"
+        assert model.model_path == "hagumi/013_casual-2023model.json"
+        assert model.motions == ["idle01"]
+        assert model.expressions == ["default", "smile01"]
 
 
 def test_scene_config_loads_structured_rules_with_legacy_fallback() -> None:
@@ -813,6 +950,87 @@ def test_figure_event_override_only_changes_target_figure_line() -> None:
 
     assert "changeFigure:taki/school_winter-2023/model.json -id=taki" in result.script
     assert "changeFigure:taki/040_casual_summer-2023model.json -id=taki -motion=custom_motion -expression=smile -right -next;" in result.script
+
+
+def test_figure_event_override_can_use_external_model_path() -> None:
+    result = convert_text(
+        "灯：你好",
+        CONFIG_DIR,
+        figure_event_overrides={
+            0: {
+                "model_path": "户山香澄/casual/idle01_default.png",
+                "resource_type": "legacy",
+                "source_name": "户山香澄",
+                "model_key": "casual",
+                "motion": "idle01",
+                "expression": "default",
+            }
+        },
+    )
+
+    assert "changeFigure:户山香澄/casual/idle01_default.png -id=tomori -motion=idle01 -expression=default -left -next;" in result.script
+
+
+def test_convert_text_prefers_external_figure_index_when_available() -> None:
+    index = FigureResourceIndex(
+        root_dir=ROOT / "dummy_external_figure",
+        characters={
+            "高松灯": FigureCharacterEntry(
+                source_name="高松灯",
+                mapped_character_id="tomori",
+                mapping_source="manual",
+                models={
+                    "school_winter-2023": FigureModelEntry(
+                        model_key="school_winter-2023",
+                        model_path="高松灯/school_winter-2023/model.json",
+                        resource_type="live2d_json",
+                        character_dir_name="高松灯",
+                        motions=["idle01", "wave01"],
+                        expressions=["default", "smile"],
+                    )
+                },
+            )
+        },
+    )
+
+    result = convert_text("灯：你好", CONFIG_DIR, figure_resource_index=index)
+
+    assert "changeFigure:高松灯/school_winter-2023/model.json -id=tomori -motion=idle01 -expression=default -left -next;" in result.script
+
+
+def test_convert_text_prefers_legacy_model_json_over_other_external_assets() -> None:
+    index = FigureResourceIndex(
+        root_dir=ROOT / "dummy_external_figure",
+        characters={
+            "hagumi": FigureCharacterEntry(
+                source_name="hagumi",
+                mapped_character_id="hagumi",
+                mapping_source="auto",
+                models={
+                    "casual-2023": FigureModelEntry(
+                        model_key="casual-2023",
+                        model_path="hagumi/013_casual-2023model.json",
+                        resource_type="legacy_json",
+                        character_dir_name="hagumi",
+                        motions=["idle01"],
+                        expressions=["default", "smile01"],
+                    ),
+                    "live2d_texture": FigureModelEntry(
+                        model_key="live2d_texture",
+                        model_path="hagumi/live2d/chara/013_2018_dog_rip/texture_00.png",
+                        resource_type="legacy",
+                        character_dir_name="hagumi",
+                        motions=["texture"],
+                        expressions=["00"],
+                    ),
+                },
+            )
+        },
+    )
+
+    result = convert_text("育美：你好呀", CONFIG_DIR, figure_resource_index=index)
+
+    assert "changeFigure:hagumi/013_casual-2023model.json -id=hagumi -motion=idle01 -expression=default -left -next;" in result.script
 
 
 def test_single_character_alias_does_not_match_inside_common_word() -> None:

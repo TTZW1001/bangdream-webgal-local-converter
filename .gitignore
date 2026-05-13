@@ -10,7 +10,11 @@ release/
 *.spec
 desktop.ini
 *.tmp
+app_settings.json
+_scan_check_legacy_model_json/
+tests/_tmp_*/
 项目概述.md
 SCENE_MAINTENANCE.md
+外部Figure资源适配设计方案.md
 图标.ico
 图标.png
