@@ -4,7 +4,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 import re
 
-from .models import AppConfig, PendingItem, ResolvedSegment, SegmentKind
+from .models import AppConfig, FigureModelEntry, FigureResourceIndex, PendingItem, ResolvedSegment, SegmentKind
 from .scene_detector import SceneDetector
 
 
@@ -100,6 +100,7 @@ class WebGALGenerator:
         segment_scene_locks: dict[int, str] | None = None,
         figure_controls: dict[str, dict[str, str]] | None = None,
         figure_event_overrides: dict[int, dict[str, str]] | None = None,
+        figure_resource_index: FigureResourceIndex | None = None,
         auto_change_background: bool = True,
         insert_figure_on_first_appearance: bool = True,
         fallback_background: str = "纯黑.png",
@@ -112,6 +113,7 @@ class WebGALGenerator:
         self.segment_scene_locks = segment_scene_locks or {}
         self.figure_controls = figure_controls or {}
         self.figure_event_overrides = figure_event_overrides or {}
+        self.figure_resource_index = figure_resource_index
         self.auto_change_background = auto_change_background
         self.insert_figure_on_first_appearance = insert_figure_on_first_appearance
         self.fallback_background = fallback_background
@@ -401,7 +403,25 @@ class WebGALGenerator:
         # default model for the chosen resource mode -> filesystem fallback.
         character = self.config.characters[character_id]
         event_override = self.figure_event_overrides.get(figure_event_index, {})
+        external_model_path = event_override.get("model_path")
+        if external_model_path:
+            motion = event_override.get("motion") or character.default_motion_generic
+            expression = event_override.get("expression") or character.default_expression or "default"
+            position = event_override.get("position") or position
+            return (
+                f"changeFigure:{external_model_path} -id={character_id} "
+                f"-motion={motion} -expression={expression} {position} -next;"
+            )
         model_key = event_override.get("model_key") or self._figure_control_value(character_id, "model_key") or self.model_overrides.get(character_id)
+        external_model = self._select_external_model(character_id, model_key)
+        if external_model:
+            motion = event_override.get("motion") or self._default_external_motion(external_model)
+            expression = event_override.get("expression") or self._default_external_expression(external_model)
+            position = event_override.get("position") or position
+            return (
+                f"changeFigure:{external_model.model_path} -id={character_id} "
+                f"-motion={motion} -expression={expression} {position} -next;"
+            )
         mode = self._mode_for(character_id, model_key)
         explicit_model_selected = False
         if mode == "31":
@@ -438,6 +458,78 @@ class WebGALGenerator:
             f"changeFigure:{model} -id={character_id} "
             f"-motion={motion} -expression={expression} {position} -next;"
         )
+
+    def _select_external_model(self, character_id: str, preferred_key: str | None = None) -> FigureModelEntry | None:
+        if not self.figure_resource_index:
+            return None
+        models = self.figure_resource_index.models_for_character_id(character_id)
+        if not models:
+            return None
+        model_items = list(models.values())
+        if preferred_key:
+            preferred = self._normalize_model_key(preferred_key)
+            exact_matches = [
+                model
+                for model in model_items
+                if self._normalize_model_key(model.model_key) == preferred
+            ]
+            if exact_matches:
+                return sorted(exact_matches, key=lambda item: item.model_path)[0]
+            prefix_matches = [
+                model
+                for model in model_items
+                if self._normalize_model_key(model.model_key).startswith(preferred)
+            ]
+            if prefix_matches:
+                return sorted(prefix_matches, key=lambda item: item.model_path)[0]
+
+        preferred_order = [
+            "school_winter",
+            "school_summer",
+            "casual_winter",
+            "casual_summer",
+            "casual",
+            "live_default",
+            "live",
+        ]
+        ranked = sorted(
+            model_items,
+            key=lambda item: (
+                self._external_model_rank(item.model_key, preferred_order),
+                self._external_resource_type_rank(item.resource_type),
+                item.model_path,
+            ),
+        )
+        return ranked[0] if ranked else None
+
+    def _external_model_rank(self, model_key: str, preferred_order: list[str]) -> int:
+        normalized = self._normalize_model_key(model_key)
+        for index, preferred in enumerate(preferred_order):
+            preferred_normalized = self._normalize_model_key(preferred)
+            if normalized == preferred_normalized or normalized.startswith(preferred_normalized):
+                return index
+        return len(preferred_order)
+
+    def _external_resource_type_rank(self, resource_type: str) -> int:
+        order = {
+            "legacy_json": 0,
+            "live2d_json": 1,
+            "legacy": 2,
+        }
+        return order.get(resource_type, 99)
+
+    def _normalize_model_key(self, value: str) -> str:
+        return re.sub(r"[^a-z0-9]+", "_", value.casefold()).strip("_")
+
+    def _default_external_motion(self, model: FigureModelEntry) -> str:
+        if "idle01" in model.motions:
+            return "idle01"
+        return model.motions[0] if model.motions else "idle01"
+
+    def _default_external_expression(self, model: FigureModelEntry) -> str:
+        if "default" in model.expressions:
+            return "default"
+        return model.expressions[0] if model.expressions else "default"
 
     def _model_exists(self, root: Path, model: str) -> bool:
         return (root / model.replace("/", "\\")).exists()

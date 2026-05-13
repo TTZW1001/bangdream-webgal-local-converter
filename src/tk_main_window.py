@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import ctypes
+import json
 import re
 import tkinter as tk
 from tkinter import filedialog, font, messagebox, ttk
@@ -7,10 +9,13 @@ from pathlib import Path
 
 from .config_loader import load_config
 from .converter import convert_text
-from .models import ConversionResult, SegmentKind
+from .figure_resource_index import scan_figure_directory
+from .models import ConversionResult, FigureModelEntry, FigureResourceIndex, SegmentKind
 from .ui_dialogs import (
     open_figure_control_settings_dialog,
     open_figure_event_editor_dialog,
+    open_figure_mapping_dialog,
+    open_figure_resource_settings_dialog,
     open_model_settings_dialog,
     open_scene_lock_settings_dialog,
     open_speaker_picker_dialog,
@@ -25,12 +30,18 @@ class TkMainWindow:
     def __init__(self, root: tk.Tk, config_dir: Path) -> None:
         self.root = root
         self.config_dir = config_dir
+        self.settings_path = config_dir.parent / "app_settings.json"
+        self.settings = self._load_settings()
         self.config = load_config(config_dir)
         self.model_overrides: dict[str, str] = {}
         self.speaker_overrides: dict[int, str] = {}
         self.segment_scene_locks: dict[int, str] = {}
         self.figure_controls: dict[str, dict[str, str]] = {}
         self.figure_event_overrides: dict[int, dict[str, str]] = {}
+        self.figure_source_mode = self._load_figure_source_mode()
+        self.figure_root_dir: Path | None = None
+        self.figure_resource_index: FigureResourceIndex | None = None
+        self.figure_character_mappings: dict[str, str] = {}
         self.output_figure_events: dict[int, tuple[int, str]] = {}
         self.last_result: ConversionResult | None = None
         self.pending_segment_orders: list[int | None] = []
@@ -41,12 +52,12 @@ class TkMainWindow:
         self.link_scroll_var = tk.BooleanVar(value=True)
         self.input_segment_lines: list[int] = []
         self.output_segment_lines: list[int] = []
-        root.title("Fanfic2WebGAL Local Converter")
+        root.title("邦邦WebGAL转化器")
         root.geometry("1160x680")
         root.minsize(1120, 620)
 
         self.palettes = build_palettes()
-        self.theme_var = tk.StringVar(value="light")
+        self.theme_var = tk.StringVar(value=self._load_theme_preference())
         self.colors = dict(self.palettes[self.theme_var.get()])
         self.ui_font = font.Font(family="Microsoft YaHei UI", size=11)
         self.label_font = font.Font(family="Microsoft YaHei UI", size=11, weight="bold")
@@ -60,9 +71,11 @@ class TkMainWindow:
         self.toolbar.pack(fill=tk.X, padx=12, pady=(10, 8))
 
         ttk.Button(self.toolbar, text="导入文本", command=self.import_text, style="Secondary.TButton").pack(side=tk.LEFT, padx=(0, 8))
+        ttk.Button(self.toolbar, text="清空文本", command=self.clear_texts, style="Quiet.TButton").pack(side=tk.LEFT, padx=(0, 8))
         ttk.Button(self.toolbar, text="生成脚本", command=self.generate_script, style="Primary.TButton").pack(side=tk.LEFT, padx=(0, 8))
         ttk.Button(self.toolbar, text="导出脚本", command=self.export_script, style="Secondary.TButton").pack(side=tk.LEFT, padx=(0, 8))
         ttk.Button(self.toolbar, text="模型设置", command=self.open_model_settings, style="Secondary.TButton").pack(side=tk.LEFT, padx=(0, 8))
+        ttk.Button(self.toolbar, text="立绘资源设置", command=self.open_figure_resource_settings, style="Secondary.TButton").pack(side=tk.LEFT, padx=(0, 8))
         self.theme_button = ttk.Button(self.toolbar, text="黑夜模式", command=self.toggle_theme, style="Quiet.TButton")
         self.theme_button.pack(side=tk.RIGHT)
         ttk.Label(self.toolbar, text="模型模式", style="Toolbar.TLabel").pack(side=tk.LEFT, padx=(18, 6))
@@ -74,6 +87,10 @@ class TkMainWindow:
         school_menu = self._make_combobox(self.toolbar, self.school_var, ("auto", "花咲川", "羽丘", "月之森"), width=8)
         school_menu.pack(side=tk.LEFT)
         self.scene_lock_var = tk.StringVar(value="")
+
+        self.figure_status_var = tk.StringVar(value="")
+        self.figure_status_label = ttk.Label(root, textvariable=self.figure_status_var, style="Toolbar.TLabel")
+        self.figure_status_label.pack(fill=tk.X, padx=12, pady=(0, 6))
 
         self.main_pane = tk.PanedWindow(root, orient=tk.VERTICAL, sashrelief=tk.RAISED, bg=self.colors["border"], sashwidth=6)
         self.main_pane.pack(fill=tk.BOTH, expand=True, padx=12, pady=(0, 10))
@@ -189,7 +206,48 @@ class TkMainWindow:
         self.dialogue_list.bind("<Double-Button-1>", lambda _event: self.correct_selected_dialogue())
         self.body.bind("<Configure>", self.on_body_configure)
         self.correction_area.bind("<Configure>", self.on_correction_area_configure)
+        self.root.protocol("WM_DELETE_WINDOW", self.on_close)
+        self._restore_figure_directory()
+        self.refresh_figure_status()
         self.root.after(120, self.set_initial_layout)
+
+    def _load_settings(self) -> dict:
+        try:
+            if self.settings_path.exists():
+                payload = json.loads(self.settings_path.read_text(encoding="utf-8"))
+                if isinstance(payload, dict):
+                    return payload
+        except (OSError, json.JSONDecodeError):
+            pass
+        return {}
+
+    def _load_theme_preference(self) -> str:
+        theme = self.settings.get("theme")
+        if theme in {"light", "dark"}:
+            return theme
+        return "light"
+
+    def _load_figure_source_mode(self) -> str:
+        value = str(self.settings.get("figure_source_mode") or "builtin").strip()
+        return value if value in {"builtin", "custom"} else "builtin"
+
+    def _save_settings(self) -> None:
+        try:
+            payload = dict(self.settings)
+            payload["theme"] = self.theme_var.get()
+            payload["figure_source_mode"] = self.figure_source_mode
+            payload["figure_root_dir"] = str(self.figure_root_dir) if self.figure_root_dir else ""
+            mapping_store = dict(payload.get("figure_character_mappings", {}))
+            current_key = self._figure_root_settings_key()
+            if current_key:
+                mapping_store[current_key] = dict(self.figure_character_mappings)
+            payload["figure_character_mappings"] = mapping_store
+            self.settings_path.write_text(
+                json.dumps(payload, ensure_ascii=False, indent=2),
+                encoding="utf-8",
+            )
+        except OSError:
+            pass
 
     def configure_theme(self) -> None:
         configure_app_theme(self)
@@ -241,6 +299,11 @@ class TkMainWindow:
         self.theme_var.set("dark" if self.theme_var.get() == "light" else "light")
         self.configure_theme()
         self.apply_theme_to_widgets()
+        self._save_settings()
+
+    def on_close(self) -> None:
+        self._save_settings()
+        self.root.destroy()
 
     def apply_theme_to_widgets(self) -> None:
         apply_app_theme_to_widgets(self)
@@ -390,6 +453,138 @@ class TkMainWindow:
         self.speaker_overrides.clear()
         self.segment_scene_locks.clear()
 
+    def clear_texts(self) -> None:
+        self.input_text.delete("1.0", tk.END)
+        self.output_text.delete("1.0", tk.END)
+        self.pending_list.delete(0, tk.END)
+        self.dialogue_list.delete(0, tk.END)
+        self.speaker_overrides.clear()
+        self.segment_scene_locks.clear()
+        self.figure_event_overrides.clear()
+        self.output_figure_events.clear()
+        self.last_result = None
+        self.pending_segment_orders.clear()
+        self.dialogue_segment_orders.clear()
+        self.output_segment_line_map.clear()
+        self.input_segment_lines.clear()
+        self.output_segment_lines.clear()
+
+    def select_figure_directory(self) -> None:
+        selected = filedialog.askdirectory(title="选择 figure 根目录")
+        if not selected:
+            return
+        self._apply_figure_directory(Path(selected))
+
+    def _restore_figure_directory(self) -> None:
+        raw_path = str(self.settings.get("figure_root_dir") or "").strip()
+        if not raw_path or self.figure_source_mode != "custom":
+            return
+        figure_dir = Path(raw_path)
+        if figure_dir.exists() and figure_dir.is_dir():
+            self._apply_figure_directory(figure_dir, show_message=False)
+
+    def _apply_figure_directory(self, figure_dir: Path, show_message: bool = True) -> None:
+        self.figure_root_dir = figure_dir
+        self.figure_character_mappings = self._load_figure_character_mappings(figure_dir)
+        index = scan_figure_directory(
+            figure_dir,
+            self.config,
+            manual_mappings=self.figure_character_mappings,
+        )
+        self.figure_resource_index = index
+        self.settings["figure_root_dir"] = str(figure_dir)
+        self._save_settings()
+        self.refresh_figure_status()
+        if show_message:
+            messagebox.showinfo("Figure 扫描完成", self._build_figure_scan_summary(index))
+
+    def _figure_root_settings_key(self, figure_dir: Path | None = None) -> str | None:
+        target = figure_dir or self.figure_root_dir
+        if not target:
+            return None
+        return str(target)
+
+    def _load_figure_character_mappings(self, figure_dir: Path) -> dict[str, str]:
+        raw_store = self.settings.get("figure_character_mappings", {})
+        if not isinstance(raw_store, dict):
+            return {}
+        raw_mapping = raw_store.get(self._figure_root_settings_key(figure_dir), {})
+        if not isinstance(raw_mapping, dict):
+            return {}
+        return {
+            str(source_name): str(character_id)
+            for source_name, character_id in raw_mapping.items()
+            if str(character_id).strip()
+        }
+
+    def _build_figure_scan_summary(self, index: FigureResourceIndex) -> str:
+        lines = [
+            f"目录：{index.root_dir}",
+            index.summary_text(),
+        ]
+        if index.unmapped_characters:
+            preview = "、".join(index.unmapped_characters[:8])
+            suffix = " ……" if len(index.unmapped_characters) > 8 else ""
+            lines.append(f"未映射角色：{preview}{suffix}")
+        return "\n".join(lines)
+
+    def refresh_figure_status(self) -> None:
+        if self.figure_source_mode == "builtin":
+            self.figure_status_var.set("立绘资源：系统默认内置")
+            return
+        if self.figure_root_dir and self.figure_resource_index:
+            self.figure_status_var.set(
+                f"立绘资源：自定义目录 {self.figure_root_dir.name} | {self.figure_resource_index.summary_text()}"
+            )
+            return
+        if self.figure_root_dir:
+            self.figure_status_var.set(f"立绘资源：自定义目录 {self.figure_root_dir.name} | 尚未完成扫描")
+            return
+        self.figure_status_var.set("立绘资源：自定义目录（未选择）")
+
+    def open_figure_mapping_settings(self) -> None:
+        if self.figure_source_mode != "custom":
+            messagebox.showinfo("当前为内置资源", "请先在立绘资源设置里切换到“自定义 figure 目录”。")
+            return
+        if not self.figure_root_dir or not self.figure_resource_index:
+            messagebox.showinfo("未选择目录", "请先选择外部 Figure 目录。")
+            return
+        open_figure_mapping_dialog(self)
+
+    def apply_figure_character_mappings(self, mapping_values: dict[str, str]) -> None:
+        self.figure_character_mappings = {
+            str(source_name): str(character_id)
+            for source_name, character_id in mapping_values.items()
+            if str(character_id).strip()
+        }
+        if not self.figure_root_dir:
+            return
+        self._apply_figure_directory(self.figure_root_dir, show_message=False)
+
+    def open_figure_resource_settings(self) -> None:
+        open_figure_resource_settings_dialog(self)
+
+    def apply_figure_resource_settings(self, source_mode: str, figure_dir: Path | None) -> None:
+        self.figure_source_mode = source_mode if source_mode in {"builtin", "custom"} else "builtin"
+        if self.figure_source_mode == "builtin":
+            self.figure_resource_index = None
+            self.figure_character_mappings = {}
+            self.refresh_figure_status()
+            self._save_settings()
+            return
+        if figure_dir and figure_dir.exists() and figure_dir.is_dir():
+            self._apply_figure_directory(figure_dir, show_message=False)
+            return
+        self.figure_root_dir = figure_dir
+        self.figure_resource_index = None
+        self.refresh_figure_status()
+        self._save_settings()
+
+    def external_figure_models_for(self, character_id: str) -> dict[str, FigureModelEntry]:
+        if not self.figure_resource_index:
+            return {}
+        return self.figure_resource_index.models_for_character_id(character_id)
+
     def copy_output_script(self) -> None:
         script = self.output_text.get("1.0", tk.END).strip()
         if not script:
@@ -413,6 +608,7 @@ class TkMainWindow:
                 segment_scene_locks=self.segment_scene_locks,
                 figure_controls=self.figure_controls,
                 figure_event_overrides=self.figure_event_overrides,
+                figure_resource_index=self.figure_resource_index if self.figure_source_mode == "custom" else None,
             )
         except Exception as exc:  # pragma: no cover - GUI safety net
             messagebox.showerror("生成失败", str(exc))
@@ -652,18 +848,48 @@ def _apply_app_icon(root: tk.Tk, project_root: Path) -> None:
     try:
         if icon_ico.exists():
             root.iconbitmap(default=str(icon_ico))
-        elif icon_png.exists():
+        if icon_png.exists():
             icon_image = tk.PhotoImage(file=str(icon_png))
             root.iconphoto(True, icon_image)
             root._app_icon_image = icon_image  # type: ignore[attr-defined]
-            return
         legacy_ico = project_root / "图标.ico"
         legacy_png = project_root / "图标.png"
         if legacy_ico.exists():
             root.iconbitmap(default=str(legacy_ico))
-        elif legacy_png.exists():
+        if legacy_png.exists():
             icon_image = tk.PhotoImage(file=str(legacy_png))
             root.iconphoto(True, icon_image)
             root._app_icon_image = icon_image  # type: ignore[attr-defined]
     except tk.TclError:
+        pass
+    _apply_windows_titlebar_icon(root, icon_ico if icon_ico.exists() else None)
+
+
+def _apply_windows_titlebar_icon(root: tk.Tk, icon_path: Path | None) -> None:
+    if not icon_path:
+        return
+    try:
+        root.update_idletasks()
+        hwnd = root.winfo_id()
+        user32 = ctypes.windll.user32
+        image_icon = 1
+        lr_loadfromfile = 0x00000010
+        wm_seticon = 0x0080
+        icon_small = 0
+        icon_big = 1
+
+        user32.LoadImageW.argtypes = [ctypes.c_void_p, ctypes.c_wchar_p, ctypes.c_uint, ctypes.c_int, ctypes.c_int, ctypes.c_uint]
+        user32.LoadImageW.restype = ctypes.c_void_p
+        user32.SendMessageW.argtypes = [ctypes.c_void_p, ctypes.c_uint, ctypes.c_void_p, ctypes.c_void_p]
+        user32.SendMessageW.restype = ctypes.c_void_p
+
+        small_icon = user32.LoadImageW(None, str(icon_path), image_icon, 16, 16, lr_loadfromfile)
+        big_icon = user32.LoadImageW(None, str(icon_path), image_icon, 32, 32, lr_loadfromfile)
+        if small_icon:
+            user32.SendMessageW(hwnd, wm_seticon, icon_small, small_icon)
+        if big_icon:
+            user32.SendMessageW(hwnd, wm_seticon, icon_big, big_icon)
+        root._small_hicon = small_icon  # type: ignore[attr-defined]
+        root._big_hicon = big_icon  # type: ignore[attr-defined]
+    except Exception:
         pass

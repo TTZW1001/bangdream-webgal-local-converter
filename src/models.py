@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from enum import Enum
+from pathlib import Path
 
 
 class SegmentKind(str, Enum):
@@ -77,3 +78,71 @@ class ConversionResult:
     script: str
     pending_items: list[PendingItem]
     segments: list[ResolvedSegment]
+
+
+@dataclass
+class FigureModelEntry:
+    model_key: str
+    model_path: str
+    resource_type: str
+    character_dir_name: str
+    motions: list[str] = field(default_factory=list)
+    expressions: list[str] = field(default_factory=list)
+
+
+@dataclass
+class FigureCharacterEntry:
+    source_name: str
+    mapped_character_id: str | None = None
+    mapping_source: str | None = None
+    models: dict[str, FigureModelEntry] = field(default_factory=dict)
+
+
+@dataclass
+class FigureResourceIndex:
+    root_dir: Path
+    characters: dict[str, FigureCharacterEntry] = field(default_factory=dict)
+
+    @property
+    def total_characters(self) -> int:
+        return len(self.characters)
+
+    @property
+    def total_models(self) -> int:
+        return sum(len(entry.models) for entry in self.characters.values())
+
+    @property
+    def mapped_characters(self) -> int:
+        return sum(1 for entry in self.characters.values() if entry.mapped_character_id)
+
+    @property
+    def unmapped_characters(self) -> list[str]:
+        return sorted(
+            entry.source_name
+            for entry in self.characters.values()
+            if not entry.mapped_character_id
+        )
+
+    def summary_text(self) -> str:
+        if not self.characters:
+            return "未扫描到可识别的 figure 资源"
+        resource_types = {
+            model.resource_type
+            for entry in self.characters.values()
+            for model in entry.models.values()
+        }
+        type_label = " / ".join(sorted(resource_types)) if resource_types else "unknown"
+        return (
+            f"角色 {self.total_characters} 个，模型 {self.total_models} 个，"
+            f"已映射 {self.mapped_characters} 个，资源类型：{type_label}"
+        )
+
+    def models_for_character_id(self, character_id: str) -> dict[str, FigureModelEntry]:
+        results: dict[str, FigureModelEntry] = {}
+        for entry in self.characters.values():
+            if entry.mapped_character_id != character_id:
+                continue
+            for model_key, model in entry.models.items():
+                option_key = f"{entry.source_name}/{model_key}"
+                results[option_key] = model
+        return results

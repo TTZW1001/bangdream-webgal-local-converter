@@ -1,10 +1,17 @@
 from __future__ import annotations
 
 import tkinter as tk
-from tkinter import messagebox, ttk
+from tkinter import filedialog, messagebox, ttk
+from pathlib import Path
 from typing import Any
 
 from .models import SegmentKind
+
+
+def _prepare_dialog(window: tk.Toplevel, app: Any) -> None:
+    window.transient(app.root)
+    window.lift()
+    window.focus_force()
 
 
 def open_speaker_picker_dialog(app: Any, segment_order: int) -> None:
@@ -14,8 +21,37 @@ def open_speaker_picker_dialog(app: Any, segment_order: int) -> None:
     window.title(f"修正{segment_kind} #{segment_order}")
     window.geometry("420x520")
     window.configure(bg=app.colors["window"])
+    _prepare_dialog(window, app)
 
     ttk.Label(window, text="选择角色", style="PanelTitle.TLabel").pack(anchor="w", padx=12, pady=(12, 4))
+
+    all_entries = sorted(
+        app.config.characters.items(),
+        key=lambda item: (item[1].band or "", item[1].generic_character_id or "999", item[0]),
+    )
+    if app.figure_source_mode == "custom" and app.figure_resource_index:
+        allowed_ids = {
+            entry.mapped_character_id
+            for entry in app.figure_resource_index.characters.values()
+            if entry.mapped_character_id
+        }
+        entries = [item for item in all_entries if item[0] in allowed_ids]
+        source_hint = "当前使用自定义 figure 目录，仅显示已映射且资源实际存在的角色。"
+    else:
+        entries = list(all_entries)
+        source_hint = "当前使用系统默认内置资源，可按队伍筛选角色。"
+
+    ttk.Label(window, text=source_hint, style="Toolbar.TLabel", wraplength=390, justify=tk.LEFT).pack(anchor="w", padx=12, pady=(0, 8))
+
+    band_var = tk.StringVar(value="全部")
+    if app.figure_source_mode != "custom":
+        filter_row = tk.Frame(window, bg=app.colors["window"])
+        filter_row.pack(fill=tk.X, padx=12, pady=(0, 8))
+        ttk.Label(filter_row, text="队伍筛选", style="Toolbar.TLabel").pack(side=tk.LEFT)
+        band_values = ["全部"] + sorted({character.band for _character_id, character in entries if character.band})
+        band_combo = app._make_combobox(filter_row, band_var, band_values, width=18)
+        band_combo.pack(side=tk.LEFT, padx=(8, 0))
+
     character_list = tk.Listbox(
         window,
         font=app.ui_font,
@@ -28,21 +64,41 @@ def open_speaker_picker_dialog(app: Any, segment_order: int) -> None:
         activestyle="none",
     )
     character_list.pack(fill=tk.BOTH, expand=True, padx=12, pady=(0, 10))
-    entries = sorted(
-        app.config.characters.items(),
-        key=lambda item: (item[1].band or "", item[1].generic_character_id or "999", item[0]),
-    )
-    for character_id, character in entries:
-        label = f"{character.display_name} ({character_id})"
-        if character.band:
-            label += f" - {character.band}"
-        character_list.insert(tk.END, label)
+
+    visible_entries: list[tuple[str, Any]] = []
+
+    def refresh_character_list() -> None:
+        nonlocal visible_entries
+        previous_selection = character_list.curselection()
+        current_selected_id = None
+        if previous_selection and previous_selection[0] < len(visible_entries):
+            current_selected_id = visible_entries[previous_selection[0]][0]
+        selected_band = band_var.get()
+        visible_entries = [
+            item
+            for item in entries
+            if selected_band == "全部" or item[1].band == selected_band
+        ]
+        character_list.delete(0, tk.END)
+        for character_id, character in visible_entries:
+            label = f"{character.display_name} ({character_id})"
+            if character.band:
+                label += f" - {character.band}"
+            character_list.insert(tk.END, label)
+        if current_selected_id:
+            for index, (character_id, _character) in enumerate(visible_entries):
+                if character_id == current_selected_id:
+                    character_list.selection_set(index)
+                    character_list.see(index)
+                    break
+
+    refresh_character_list()
 
     def apply_choice() -> None:
         selection = character_list.curselection()
         if not selection:
             return
-        character_id = entries[selection[0]][0]
+        character_id = visible_entries[selection[0]][0]
         app.speaker_overrides[segment_order] = f"char:{character_id}"
         window.destroy()
         app.generate_script()
@@ -95,11 +151,13 @@ def open_speaker_picker_dialog(app: Any, segment_order: int) -> None:
             custom_var.set(current[5:])
         else:
             current_id = current[5:] if current.startswith("char:") else current
-            for index, (character_id, _character) in enumerate(entries):
+            for index, (character_id, _character) in enumerate(visible_entries):
                 if character_id == current_id:
                     character_list.selection_set(index)
                     character_list.see(index)
                     break
+    if app.figure_source_mode != "custom":
+        band_combo.bind("<<ComboboxSelected>>", lambda _event: refresh_character_list())
     custom_entry.focus_set()
 
 
@@ -117,12 +175,43 @@ def open_figure_event_editor_dialog(app: Any, line_number: int) -> None:
     window.title(f"立绘微调 #{figure_event_index} {character.display_name}")
     window.geometry("460x360")
     window.configure(bg=app.colors["window"])
+    _prepare_dialog(window, app)
 
     override = app.figure_event_overrides.get(figure_event_index, {})
-    keys = ["默认"] + sorted(set(character.models_31.keys()) | set(character.models_generic.keys()))
-    model_var = tk.StringVar(value=override.get("model_key", "默认"))
-    motion_var = tk.StringVar(value=override.get("motion", ""))
-    expression_var = tk.StringVar(value=override.get("expression", ""))
+    internal_keys = sorted(set(character.models_31.keys()) | set(character.models_generic.keys()))
+    external_models = app.external_figure_models_for(character_id)
+    model_options: list[tuple[str, dict[str, str]]] = [("默认（内置）", {})]
+    for key in internal_keys:
+        model_options.append((f"内置：{key}", {"model_key": key}))
+    for option_key, model in sorted(external_models.items()):
+        label = f"外部：{option_key} [{model.resource_type}]"
+        model_options.append(
+            (
+                label,
+                {
+                    "model_path": model.model_path,
+                    "resource_type": model.resource_type,
+                    "source_name": model.character_dir_name,
+                    "model_key": model.model_key,
+                },
+            )
+        )
+
+    option_payload_by_label = {label: payload for label, payload in model_options}
+    label_by_payload: dict[tuple[tuple[str, str], ...], str] = {
+        tuple(sorted(payload.items())): label
+        for label, payload in model_options
+    }
+
+    current_payload = {
+        key: str(value)
+        for key, value in override.items()
+        if key in {"model_key", "model_path", "resource_type", "source_name"}
+    }
+    current_label = label_by_payload.get(tuple(sorted(current_payload.items())), "默认（内置）")
+    model_var = tk.StringVar(value=current_label)
+    motion_var = tk.StringVar(value=override.get("motion", "默认"))
+    expression_var = tk.StringVar(value=override.get("expression", "默认"))
     position_var = tk.StringVar(value=override.get("position", "auto"))
 
     ttk.Label(window, text=f"角色：{character.display_name} ({character_id})", style="PanelTitle.TLabel").pack(anchor="w", padx=12, pady=(12, 4))
@@ -130,11 +219,14 @@ def open_figure_event_editor_dialog(app: Any, line_number: int) -> None:
     form.pack(fill=tk.X, padx=12, pady=8)
 
     ttk.Label(form, text="模型键", style="Toolbar.TLabel").grid(row=0, column=0, sticky="w", pady=5)
-    app._make_combobox(form, model_var, keys).grid(row=0, column=1, sticky="ew", pady=5)
+    model_combo = app._make_combobox(form, model_var, [label for label, _payload in model_options])
+    model_combo.grid(row=0, column=1, sticky="ew", pady=5)
     ttk.Label(form, text="动作", style="Toolbar.TLabel").grid(row=1, column=0, sticky="w", pady=5)
-    ttk.Entry(form, textvariable=motion_var, font=app.ui_font).grid(row=1, column=1, sticky="ew", pady=5)
+    motion_combo = app._make_combobox(form, motion_var, ("默认",))
+    motion_combo.grid(row=1, column=1, sticky="ew", pady=5)
     ttk.Label(form, text="表情", style="Toolbar.TLabel").grid(row=2, column=0, sticky="w", pady=5)
-    ttk.Entry(form, textvariable=expression_var, font=app.ui_font).grid(row=2, column=1, sticky="ew", pady=5)
+    expression_combo = app._make_combobox(form, expression_var, ("默认",))
+    expression_combo.grid(row=2, column=1, sticky="ew", pady=5)
     ttk.Label(form, text="位置", style="Toolbar.TLabel").grid(row=3, column=0, sticky="w", pady=5)
     app._make_combobox(form, position_var, ("auto", "-left", "-right")).grid(row=3, column=1, sticky="ew", pady=5)
     form.columnconfigure(1, weight=1)
@@ -142,13 +234,42 @@ def open_figure_event_editor_dialog(app: Any, line_number: int) -> None:
     current_line = app.output_text.get(f"{line_number}.0", f"{line_number}.end")
     ttk.Label(window, text=current_line, wraplength=430, justify=tk.LEFT, style="Toolbar.TLabel").pack(anchor="w", padx=12, pady=(4, 8))
 
+    def option_motion_values(payload: dict[str, str]) -> list[str]:
+        if payload.get("model_path"):
+            model = external_models.get(f"{payload.get('source_name')}/{payload.get('model_key')}")
+            if model:
+                return ["默认"] + sorted(model.motions)
+        defaults = [character.default_motion_31, character.default_motion_generic, "idle01"]
+        values = ["默认"] + [value for value in defaults if value]
+        return list(dict.fromkeys(values))
+
+    def option_expression_values(payload: dict[str, str]) -> list[str]:
+        if payload.get("model_path"):
+            model = external_models.get(f"{payload.get('source_name')}/{payload.get('model_key')}")
+            if model:
+                return ["默认"] + sorted(model.expressions)
+        defaults = [character.default_expression or "default", "default"]
+        values = ["默认"] + [value for value in defaults if value]
+        return list(dict.fromkeys(values))
+
+    def refresh_motion_and_expression(_event: object | None = None) -> None:
+        payload = option_payload_by_label.get(model_var.get(), {})
+        motion_values = option_motion_values(payload)
+        expression_values = option_expression_values(payload)
+        motion_combo.configure(values=motion_values)
+        expression_combo.configure(values=expression_values)
+        if motion_var.get() not in motion_values:
+            motion_var.set("默认")
+        if expression_var.get() not in expression_values:
+            expression_var.set("默认")
+
     def apply_override() -> None:
         control: dict[str, str] = {}
-        if model_var.get() and model_var.get() != "默认":
-            control["model_key"] = model_var.get()
-        if motion_var.get().strip():
+        payload = option_payload_by_label.get(model_var.get(), {})
+        control.update(payload)
+        if motion_var.get().strip() and motion_var.get().strip() != "默认":
             control["motion"] = motion_var.get().strip()
-        if expression_var.get().strip():
+        if expression_var.get().strip() and expression_var.get().strip() != "默认":
             control["expression"] = expression_var.get().strip()
         if position_var.get() in {"-left", "-right"}:
             control["position"] = position_var.get()
@@ -168,6 +289,8 @@ def open_figure_event_editor_dialog(app: Any, line_number: int) -> None:
     buttons.pack(fill=tk.X, padx=12, pady=(8, 0))
     ttk.Button(buttons, text="应用到这一行", command=apply_override, style="Primary.TButton").pack(side=tk.LEFT)
     ttk.Button(buttons, text="清除此行微调", command=clear_override, style="Quiet.TButton").pack(side=tk.LEFT, padx=(8, 0))
+    model_combo.bind("<<ComboboxSelected>>", refresh_motion_and_expression)
+    refresh_motion_and_expression()
 
 
 def open_scene_lock_settings_dialog(app: Any) -> None:
@@ -179,6 +302,7 @@ def open_scene_lock_settings_dialog(app: Any) -> None:
     window = tk.Toplevel(app.root)
     window.title("场景锁定设置")
     window.geometry("620x520")
+    _prepare_dialog(window, app)
 
     tk.Label(window, text="片段").pack(anchor="w", padx=8, pady=(8, 0))
     segment_list = tk.Listbox(window)
@@ -253,6 +377,7 @@ def open_figure_control_settings_dialog(app: Any) -> None:
     window = tk.Toplevel(app.root)
     window.title("立绘控制")
     window.geometry("680x520")
+    _prepare_dialog(window, app)
 
     left = tk.Frame(window)
     left.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=8, pady=8)
@@ -411,6 +536,7 @@ def open_model_settings_dialog(app: Any) -> None:
     window.title("模型设置")
     window.geometry("560x460")
     window.configure(bg=app.colors["window"])
+    _prepare_dialog(window, app)
 
     left = tk.Frame(window, bg=app.colors["window"])
     left.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=8, pady=8)
@@ -484,3 +610,187 @@ def open_model_settings_dialog(app: Any) -> None:
     if entries:
         character_list.selection_set(0)
         refresh_models()
+
+
+def open_figure_resource_settings_dialog(app: Any) -> None:
+    window = tk.Toplevel(app.root)
+    window.title("立绘资源设置")
+    window.geometry("720x380")
+    window.minsize(680, 340)
+    window.configure(bg=app.colors["window"])
+    _prepare_dialog(window, app)
+
+    mode_var = tk.StringVar(value=app.figure_source_mode)
+    path_var = tk.StringVar(value=str(app.figure_root_dir) if app.figure_root_dir else "")
+
+    ttk.Label(window, text="立绘资源来源", style="PanelTitle.TLabel").pack(anchor="w", padx=12, pady=(12, 8))
+    radio_frame = tk.Frame(window, bg=app.colors["window"])
+    radio_frame.pack(fill=tk.X, padx=12)
+    ttk.Radiobutton(radio_frame, text="系统默认内置", value="builtin", variable=mode_var).pack(anchor="w")
+    ttk.Radiobutton(radio_frame, text="自定义 figure 目录", value="custom", variable=mode_var).pack(anchor="w", pady=(6, 0))
+
+    ttk.Label(window, text="自定义目录", style="PanelTitle.TLabel").pack(anchor="w", padx=12, pady=(16, 6))
+    path_frame = tk.Frame(window, bg=app.colors["window"])
+    path_frame.pack(fill=tk.X, padx=12)
+    path_entry = ttk.Entry(path_frame, textvariable=path_var)
+    path_entry.pack(side=tk.LEFT, fill=tk.X, expand=True)
+
+    def choose_directory() -> None:
+        selected = filedialog.askdirectory(title="选择 figure 根目录")
+        if selected:
+            path_var.set(selected)
+            mode_var.set("custom")
+        window.lift()
+        window.focus_force()
+
+    browse_button = ttk.Button(path_frame, text="浏览...", command=choose_directory, style="Secondary.TButton")
+    browse_button.pack(side=tk.LEFT, padx=(8, 0))
+
+    hint = (
+        "系统默认内置：使用升级前项目自带的内置立绘选择逻辑。\n"
+        "自定义 figure 目录：扫描用户自己的 figure 资源，并可通过 Figure映射 手动修正角色对应关系。"
+    )
+    ttk.Label(window, text=hint, style="Toolbar.TLabel", justify=tk.LEFT, wraplength=600).pack(anchor="w", padx=12, pady=(12, 8))
+
+    buttons = tk.Frame(window, bg=app.colors["window"])
+    buttons.pack(fill=tk.X, padx=12, pady=(0, 12))
+
+    def apply_settings() -> None:
+        selected_mode = mode_var.get()
+        figure_dir = Path(path_var.get().strip()) if path_var.get().strip() else None
+        if selected_mode == "custom":
+            if not figure_dir or not figure_dir.exists() or not figure_dir.is_dir():
+                messagebox.showinfo("目录无效", "请选择一个有效的自定义 figure 根目录。")
+                return
+        app.apply_figure_resource_settings(selected_mode, figure_dir)
+        window.destroy()
+
+    def open_mapping() -> None:
+        selected_mode = mode_var.get()
+        figure_dir = Path(path_var.get().strip()) if path_var.get().strip() else None
+        if selected_mode != "custom":
+            messagebox.showinfo("当前为内置资源", "请先切换到“自定义 figure 目录”。")
+            return
+        if not figure_dir or not figure_dir.exists() or not figure_dir.is_dir():
+            messagebox.showinfo("目录无效", "请先选择一个有效的自定义 figure 根目录。")
+            return
+        app.apply_figure_resource_settings(selected_mode, figure_dir)
+        app.open_figure_mapping_settings()
+
+    ttk.Button(buttons, text="应用设置", command=apply_settings, style="Primary.TButton").pack(side=tk.LEFT)
+    mapping_button = ttk.Button(buttons, text="打开 Figure映射", command=open_mapping, style="Secondary.TButton")
+    mapping_button.pack(side=tk.LEFT, padx=(8, 0))
+
+    def refresh_resource_controls(*_args: object) -> None:
+        custom_enabled = mode_var.get() == "custom"
+        state = "normal" if custom_enabled else "disabled"
+        path_entry.configure(state=state)
+        browse_button.configure(state=state)
+        mapping_button.configure(state=state)
+
+    mode_var.trace_add("write", refresh_resource_controls)
+    refresh_resource_controls()
+
+
+def open_figure_mapping_dialog(app: Any) -> None:
+    if not app.figure_resource_index:
+        messagebox.showinfo("未选择目录", "请先选择外部 Figure 目录。")
+        return
+
+    window = tk.Toplevel(app.root)
+    window.title("Figure 角色映射")
+    window.geometry("760x560")
+    window.configure(bg=app.colors["window"])
+    _prepare_dialog(window, app)
+
+    ttk.Label(
+        window,
+        text=f"当前目录：{app.figure_root_dir}",
+        style="Toolbar.TLabel",
+        wraplength=720,
+        justify=tk.LEFT,
+    ).pack(anchor="w", padx=12, pady=(12, 6))
+    ttk.Label(
+        window,
+        text=app.figure_resource_index.summary_text(),
+        style="PanelTitle.TLabel",
+    ).pack(anchor="w", padx=12, pady=(0, 8))
+
+    canvas_shell = tk.Frame(window, bg=app.colors["window"])
+    canvas_shell.pack(fill=tk.BOTH, expand=True, padx=12, pady=(0, 8))
+    canvas = tk.Canvas(canvas_shell, bg=app.colors["window"], highlightthickness=0)
+    scrollbar = ttk.Scrollbar(canvas_shell, orient=tk.VERTICAL, command=canvas.yview)
+    rows = tk.Frame(canvas, bg=app.colors["window"])
+    rows.bind(
+        "<Configure>",
+        lambda _event: canvas.configure(scrollregion=canvas.bbox("all")),
+    )
+    canvas.create_window((0, 0), window=rows, anchor="nw")
+    canvas.configure(yscrollcommand=scrollbar.set)
+    canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+    scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+
+    ttk.Label(rows, text="外部角色目录", style="PanelTitle.TLabel").grid(row=0, column=0, sticky="w", padx=(0, 12), pady=(0, 8))
+    ttk.Label(rows, text="当前识别结果（自动/手动）", style="PanelTitle.TLabel").grid(row=0, column=1, sticky="w", padx=(0, 12), pady=(0, 8))
+    ttk.Label(rows, text="手动覆盖", style="PanelTitle.TLabel").grid(row=0, column=2, sticky="w", pady=(0, 8))
+
+    entries = sorted(
+        app.config.characters.items(),
+        key=lambda item: (item[1].band or "", item[1].generic_character_id or "999", item[0]),
+    )
+    label_to_character_id = {"自动": ""}
+    combo_values = ["自动"]
+    for character_id, character in entries:
+        label = f"{character.display_name} ({character_id})"
+        combo_values.append(label)
+        label_to_character_id[label] = character_id
+
+    selection_vars: dict[str, tk.StringVar] = {}
+    character_entries = sorted(app.figure_resource_index.characters.values(), key=lambda item: item.source_name.casefold())
+    for row_index, character_entry in enumerate(character_entries, start=1):
+        source_name = character_entry.source_name
+        ttk.Label(rows, text=source_name, style="Toolbar.TLabel").grid(row=row_index, column=0, sticky="w", padx=(0, 12), pady=4)
+        if character_entry.mapped_character_id:
+            character = app.config.characters.get(character_entry.mapped_character_id)
+            current_name = character.display_name if character else character_entry.mapped_character_id
+            current_text = f"{current_name} ({character_entry.mapped_character_id})"
+            if character_entry.mapping_source == "manual":
+                current_text += " [手动]"
+            else:
+                current_text += " [自动]"
+        else:
+            current_text = "未映射"
+        ttk.Label(rows, text=current_text, style="Toolbar.TLabel").grid(row=row_index, column=1, sticky="w", padx=(0, 12), pady=4)
+
+        variable = tk.StringVar(value="自动")
+        manual_value = app.figure_character_mappings.get(source_name)
+        if manual_value:
+            for label, character_id in label_to_character_id.items():
+                if character_id == manual_value:
+                    variable.set(label)
+                    break
+        combo = app._make_combobox(rows, variable, combo_values, width=28)
+        combo.grid(row=row_index, column=2, sticky="ew", pady=4)
+        selection_vars[source_name] = variable
+
+    rows.columnconfigure(2, weight=1)
+
+    def apply_mappings() -> None:
+        mapping_values: dict[str, str] = {}
+        for source_name, variable in selection_vars.items():
+            selected = variable.get()
+            character_id = label_to_character_id.get(selected, "")
+            if character_id:
+                mapping_values[source_name] = character_id
+        app.apply_figure_character_mappings(mapping_values)
+        window.destroy()
+        messagebox.showinfo("映射已更新", app._build_figure_scan_summary(app.figure_resource_index))
+
+    def clear_manual_mappings() -> None:
+        for variable in selection_vars.values():
+            variable.set("自动")
+
+    buttons = tk.Frame(window, bg=app.colors["window"])
+    buttons.pack(fill=tk.X, padx=12, pady=(0, 12))
+    ttk.Button(buttons, text="应用映射", command=apply_mappings, style="Primary.TButton").pack(side=tk.LEFT)
+    ttk.Button(buttons, text="清空手动覆盖", command=clear_manual_mappings, style="Quiet.TButton").pack(side=tk.LEFT, padx=(8, 0))

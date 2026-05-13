@@ -2,10 +2,12 @@
 setlocal
 cd /d "%~dp0"
 
+set APP_VERSION=v0.2.0
+
 echo Starting EXE build...
 echo.
 
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File "%~dp0build_exe.ps1"
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File "%~dp0build_exe.ps1" -AppVersion "%APP_VERSION%"
 set EXIT_CODE=%ERRORLEVEL%
 
 echo.
